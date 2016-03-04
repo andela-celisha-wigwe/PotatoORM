@@ -1,0 +1,9 @@
+PHPUnit_Framework_TestCasePHPUnit_Framework_TestCase## Customize the test machine
+machine:
+    php:
+        version: 5.5.11
+
+
+test:
+    override:
+        - phpunit
