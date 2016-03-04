@@ -6,6 +6,11 @@ class BaseModelTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+    public function testRandomtest()
+    {
+        $this->assertEquals(9, (14 - 5));
+    }
+
     public function testFindFunctionWorks()
     {
     }
