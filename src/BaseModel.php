@@ -5,7 +5,6 @@ class BaseModel
 {
 
     protected static $connection;
-    // $sql = "SELECT * FROM {$class}s";
     // $sql = "INSERT INTO {$table}s ($propertiesString) VALUES ('$this->name', $this->price);";
     // $sql = "SELECT * FROM {$class}s WHERE id = :id";
     // $sql = "UPDATE {$table}s SET name=?, price=? WHERE id=?";
