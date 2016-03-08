@@ -2,9 +2,8 @@
 
 namespace Elchroy\PotatoORM;
 
-require("../vendor/autoload.php");
+require '../vendor/autoload.php';
 
-use Elchroy\PotatoORM\PotatoConnector;
 use PDO;
 
 class PotatoQuery
@@ -16,12 +15,13 @@ class PotatoQuery
         self::$connection = (new PotatoConnector())::$connection;
     }
 
-    public function getFrom($table, $columns = "*")
+    public function getFrom($table, $columns = '*')
     {
         $sql = "SELECT $columns FROM $table";
         $statement = self::$connection->prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_OBJ);
+
         return $result;
     }
 
@@ -29,23 +29,25 @@ class PotatoQuery
     {
         $sql = "SELECT * FROM $table WHERE id = :id ";
         $statement = self::$connection->prepare($sql);
-        $statement->bindParam(":id", $id);
+        $statement->bindParam(':id', $id);
         if ($statement->execute() == false) {
             return false;
         }
+
         return $result = $statement->fetchObject($table); // convert the object argument to
     }
 
-    public function storeIn($table, Array $data)
+    public function storeIn($table, array $data)
     {
         $columnsString = $this->getColumns($data);
         $count = (int) count($data);
-        $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).")";
+        $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).')';
         $statement = self::$connection->prepare($sql);
         $this->setBindForInsert($statement, array_values($data));
         if ($statement->execute() == false) {
             return false;
         }
+
         return $statement->execute();
     }
 
@@ -53,53 +55,57 @@ class PotatoQuery
     {
         $sql = "DELETE FROM $table WHERE id = :id ";
         $statement = self::$connection->prepare($sql);
-        $statement->bindParam(":id", $id);
+        $statement->bindParam(':id', $id);
         if ($statement->execute() == false) {
             return false;
         }
+
         return $statement->execute();
     }
 
-    public function updateIn($table, Array $data)
+    public function updateIn($table, array $data)
     {
         $id = (int) $data['id']; // store the id in a variable.
         unset($data['id']); // remove the id key from the array. ID is to be used for the update location.
         $upd = (string) $this->makeModify(array_keys($data)); // genertate the columns for the update statement.
-        $sql = "UPDATE {$table} SET ". $upd ." WHERE id = :id_val";
+        $sql = "UPDATE {$table} SET ".$upd.' WHERE id = :id_val';
         $statement = self::$connection->prepare($sql);
         $this->setBindForUpdate($statement, $data);
-        $statement->bindValue(":id_val", $id);
+        $statement->bindValue(':id_val', $id);
         if ($statement->execute() == false) {
             return false;
         }
+
         return $statement->execute();
     }
 
-    public function setBindForUpdate($statement, Array $data)
+    public function setBindForUpdate($statement, array $data)
     {
         $count = count($data);
         foreach ($data as $key => $value) {
-            $statement->bindValue(":$key"."_val", $value);
+            $statement->bindValue(":$key".'_val', $value);
         }
     }
 
-    public function makeModify(Array $columns)
+    public function makeModify(array $columns)
     {
         // make sure that you remove the id from this upd
         $count = count($columns);
-        $upd = "";
+        $upd = '';
         foreach ($columns as $key) {
-            $upd .= $key." = ".":".$key."_val, ";
+            $upd .= $key.' = '.':'.$key.'_val, ';
         }
+
         return $upd = trim($upd, ', ');
     }
 
     public function putQuesMarks($count)
     {
-        $str = "";
+        $str = '';
         for ($i = 0; $i < $count; $i++) {
-            $str .= "?, ";
+            $str .= '?, ';
         }
+
         return $str = trim($str, ', '); // remove the last comma.
     }
 
@@ -111,8 +117,8 @@ class PotatoQuery
         }
     }
 
-    public function getColumns(Array $data)
+    public function getColumns(array $data)
     {
-        return "(".implode(", ", array_keys($data)).")";
+        return '('.implode(', ', array_keys($data)).')';
     }
 }
