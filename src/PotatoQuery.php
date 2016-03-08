@@ -2,7 +2,7 @@
 
 namespace Elchroy\PotatoORM;
 
-require '../vendor/autoload.php';
+// require '../vendor/autoload.php';
 
 use PDO;
 
@@ -10,9 +10,14 @@ class PotatoQuery
 {
     public static $connection;
 
-    public function __construct()
+    public function __construct($con = null)
     {
-        self::$connection = (new PotatoConnector())::$connection;
+        if ($con == null) {
+            self::$connection = (new PotatoConnector())::$connection;
+        } else {
+            self::$connection = $con;
+        }
+
     }
 
     public function getFrom($table, $columns = '*')
