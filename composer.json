@@ -14,7 +14,8 @@
                 ],
     "autoload" : {
         "psr-4": {
-            "Elchroy\\PotatoORM\\" : "src"
+            "Elchroy\\PotatoORM\\" : "src",
+            "Elchroy\\Tests\\" : "tests"
         }
     },
     "require" : {
