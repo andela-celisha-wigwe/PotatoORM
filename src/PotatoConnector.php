@@ -2,7 +2,7 @@
 
 namespace Elchroy\PotatoORM;
 
-use \PDO;
+use PDO;
 
 class PotatoConnector
 {
@@ -18,10 +18,12 @@ class PotatoConnector
         $password = self::getPassword();
         self::$connection = self::connect($adaptar, $host, $dbname, $username, $password);
     }
+
     private function connect($adaptar, $host, $dbname, $username, $password)
     {
         $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         return $connection;
     }
 
