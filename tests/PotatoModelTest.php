@@ -1,42 +1,52 @@
 <?php
 
-namespace Elchroy\ORM\Tests;
+// namespace Elchroy\ORM\Tests;
 
-use Elchroy\PotatoORM\Dog;
-use Mockery;
+use Elchroy\PotatoORM\PotatoQuery;
+use Mockery as m;
+use PDO;
 
 class PotatoModelTest extends \PHPUnit_Framework_TestCase
 {
     private $dbMockConn;
+    public $mockConnector;
+    public $mockStatement;
+    public $mockQuery;
+    private $mockModel;
     private $dbMockStat;
 
     public function setUp()
     {
-        // $this->dbMockConn = Mockery::mock('Elchroy\PotatoORM\PotatoModel');
-        // $this->dbMockConn->shouldReceive('connect');
-        // $this->dbMockStat = Mockery::mock('\PDOStatement');
+        // $this->mockModel = m::mock('Elchroy\PotatoORM\PotatoModel');
+        // $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
+        // $this->mockStatement = m::mock("PDOStatement");
+        // $this->mockQuery = new PotatoQuery($this->mockConnector);
     }
+
+    public function teardDown()
+    {
+        // m::close();
+    }
+
+
+    // $this->assertEquals($result, );
+
+    // $this->mockModel->shouldReceive('getAll')->once()->andReturn(["name" => "Bolt", "price" => 4567]);
+    // $expected = $this->mockModel->getAll();
+    // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
 
     public function testGetAllFunctionWorks()
     {
-        // $sql = "SELECT * FROM dog ";
-        // $this->dbMockConn->shouldReceive('prepare')->with($sql)->andReturn($this->dbMockStat);
-        // $this->dbMockStat->shouldReceive('execute')->andReturn(true);
-        // $getAll = Dog::getAll();
-        // $this->assertTrue($getAll);
-    }
-
-    protected function teardDown()
-    {
-    }
-
-    public function testRandomtest()
-    {
-        $this->assertEquals(9, (14 - 5));
+        // $this->mockModel->shouldReceive('getAll')->once()->andReturn(["name" => "Bolt", "price" => 4567]);
+        // $expected = $this->mockModel->getAll();
+        // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
     }
 
     public function testFindFunctionWorks()
     {
+        // $this->mockModel->shouldReceive('find')->with()->once()->andReturn(["name" => "Bolt", "price" => 456]);
+        // $this->mockModel->find(13);
+        // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
     }
 
     public function testSavefunctionWorks()

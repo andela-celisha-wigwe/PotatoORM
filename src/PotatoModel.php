@@ -15,7 +15,7 @@ class PotatoModel
         return $queryTo->getFrom($table);
     }
 
-    public static function find(Int $id)
+    public static function find($id)
     {
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
@@ -51,7 +51,7 @@ class PotatoModel
         return $this; // Return the updated ogject.
     }
 
-    public static function destroy(Int $id)
+    public static function destroy($id)
     {
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
