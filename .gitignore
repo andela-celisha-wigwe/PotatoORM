@@ -1,2 +1,5 @@
 vendor
 composer.lock
+index.php
+doc.txt
+src/Dog.php
