@@ -2,7 +2,6 @@
 
 use Elchroy\PotatoORM\PotatoQuery;
 use Mockery as m;
-use PDO;
 
 class PotatoQueryTest extends \PHPUnit_Framework_TestCase
 {
