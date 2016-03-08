@@ -2,16 +2,13 @@
 
 namespace Elchroy\ORM\Tests;
 
-use Elchroy\Tests;
-use Elchroy\PotatoORM\PotatoModel;
 use Elchroy\PotatoORM\Dog;
-use \Mockery;
+use Mockery;
 
 class PotatoModelTest extends \PHPUnit_Framework_TestCase
 {
     private $dbMockConn;
     private $dbMockStat;
-
 
     public function setUp()
     {
@@ -19,7 +16,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->dbMockConn->shouldReceive('connect');
         // $this->dbMockStat = Mockery::mock('\PDOStatement');
     }
-
 
     public function testGetAllFunctionWorks()
     {
@@ -29,8 +25,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $getAll = Dog::getAll();
         // $this->assertTrue($getAll);
     }
-
-
 
     protected function teardDown()
     {

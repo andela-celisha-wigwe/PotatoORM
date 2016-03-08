@@ -11,6 +11,7 @@ class PotatoModel
     {
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
+
         return $queryTo->getFrom($table);
     }
 
@@ -18,6 +19,7 @@ class PotatoModel
     {
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
+
         return $queryTo->getOne($table, $id);
     }
 
@@ -36,6 +38,7 @@ class PotatoModel
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
         $queryTo->storeIn($table, (array) $this);
+
         return $this; // return the inserted object.
     }
 
@@ -44,6 +47,7 @@ class PotatoModel
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
         $queryTo->updateIn($table, (array) $this);
+
         return $this; // Return the updated ogject.
     }
 
@@ -52,13 +56,15 @@ class PotatoModel
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
         $queryTo->deleteFrom($table, $id);
+
         return self::getAll(); // return all the items after the previous item has been deleted.
     }
 
     protected static function getClassTableName()
     {
         $tableWithNameSpance = strtolower(get_called_class());
-        $table = explode("\\", $tableWithNameSpance);
-        return (end($table));
+        $table = explode('\\', $tableWithNameSpance);
+
+        return end($table);
     }
 }
