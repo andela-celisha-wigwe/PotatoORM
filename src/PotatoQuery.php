@@ -29,7 +29,7 @@ class PotatoQuery
         return $result;
     }
 
-    public function getOne($table, Int $id)
+    public function getOne($table, $id)
     {
         $sql = "SELECT * FROM $table WHERE id = :id ";
         $statement = self::$connection->prepare($sql);
@@ -56,7 +56,7 @@ class PotatoQuery
         // AFter inserting, the item that was inserted should be returned.
     }
 
-    public function deleteFrom($table, Int $id)
+    public function deleteFrom($table, $id)
     {
         $sql = "DELETE FROM $table WHERE id = :id ";
         $statement = self::$connection->prepare($sql);
