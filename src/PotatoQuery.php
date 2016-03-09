@@ -13,7 +13,7 @@ class PotatoQuery
     public function __construct($con = null)
     {
         if ($con == null) {
-            self::$connection = (new PotatoConnector())::$connection;
+            self::$connection = (PotatoConnector::setConnection());
         } else {
             self::$connection = $con;
         }
