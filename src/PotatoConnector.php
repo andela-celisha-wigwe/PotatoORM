@@ -21,6 +21,7 @@ class PotatoConnector
         $username = self::getUsername();
         $password = self::getPassword();
         self::$connection = self::connect($adaptar, $host, $dbname, $username, $password);
+
         return self::$connection;
     }
 
