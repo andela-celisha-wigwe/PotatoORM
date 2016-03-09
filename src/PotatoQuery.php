@@ -17,7 +17,6 @@ class PotatoQuery
         } else {
             self::$connection = $con;
         }
-
     }
 
     public function getFrom($table, $columns = '*')
@@ -50,6 +49,7 @@ class PotatoQuery
         if ($statement->execute() == false) {
             return false;
         }
+
         return $statement->execute();
         // $lastInserted = $statement->lastInsertId();
         // return $this->getOne($table, $lastInserted);
