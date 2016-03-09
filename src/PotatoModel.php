@@ -46,7 +46,7 @@ class PotatoModel
     {
         $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
-        $queryTo->updateIn($table, (array) $this);
+        $queryTo->updateAt($table, (array) $this);
 
         return $this; // Return the updated ogject.
     }
