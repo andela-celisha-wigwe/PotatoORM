@@ -11,12 +11,17 @@ class PotatoConnector
 
     public function __construct()
     {
+    }
+
+    public static function setConnection()
+    {
         $adaptar = self::getAdaptar();
         $host = self::getHost();
         $dbname = self::getDBName();
         $username = self::getUsername();
         $password = self::getPassword();
         self::$connection = self::connect($adaptar, $host, $dbname, $username, $password);
+        return self::$connection;
     }
 
     private function connect($adaptar, $host, $dbname, $username, $password)
