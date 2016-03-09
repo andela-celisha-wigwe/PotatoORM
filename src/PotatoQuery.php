@@ -35,9 +35,7 @@ class PotatoQuery
         $sql = "SELECT * FROM $table WHERE id = :id ";
         $statement = self::$connection->prepare($sql);
         $statement->bindParam(':id', $id);
-        if ($statement->execute() == false) {
-            return false;
-        }
+        $statement->execute();
 
         return $result = $statement->fetchObject($table); // convert the object argument to
     }
@@ -52,8 +50,10 @@ class PotatoQuery
         if ($statement->execute() == false) {
             return false;
         }
-
         return $statement->execute();
+        // $lastInserted = $statement->lastInsertId();
+        // return $this->getOne($table, $lastInserted);
+        // AFter inserting, the item that was inserted should be returned.
     }
 
     public function deleteFrom($table, Int $id)
@@ -68,7 +68,7 @@ class PotatoQuery
         return $statement->execute();
     }
 
-    public function updateIn($table, array $data)
+    public function updateAt($table, array $data)
     {
         $id = (int) $data['id']; // store the id in a variable.
         unset($data['id']); // remove the id key from the array. ID is to be used for the update location.
