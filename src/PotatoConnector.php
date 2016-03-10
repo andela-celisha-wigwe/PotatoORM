@@ -25,7 +25,7 @@ class PotatoConnector
         return self::$connection;
     }
 
-    private function connect($adaptar, $host, $dbname, $username, $password)
+    private static function connect($adaptar, $host, $dbname, $username, $password)
     {
         $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -33,33 +33,33 @@ class PotatoConnector
         return $connection;
     }
 
-    public function getConfigurations()
+    public static function getConfigurations()
     {
         return $config = parse_ini_file(__DIR__.'/../config.ini');
     }
 
-    private function getAdaptar()
+    private static function getAdaptar()
     {
-        return $this->getConfigurations()['adaptar'];
+        return self::getConfigurations()['adaptar'];
     }
 
-    private function getHost()
+    private static function getHost()
     {
-        return $this->getConfigurations()['host'];
+        return self::getConfigurations()['host'];
     }
 
-    private function getDBName()
+    private static function getDBName()
     {
-        return $this->getConfigurations()['dbname'];
+        return self::getConfigurations()['dbname'];
     }
 
-    private function getUsername()
+    private static function getUsername()
     {
-        return $this->getConfigurations()['username'];
+        return self::getConfigurations()['username'];
     }
 
-    private function getPassword()
+    private static function getPassword()
     {
-        return $this->getConfigurations()['password'];
+        return self::getConfigurations()['password'];
     }
 }

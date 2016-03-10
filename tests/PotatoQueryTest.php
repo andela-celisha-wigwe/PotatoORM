@@ -5,16 +5,12 @@ use Mockery as m;
 
 class PotatoQueryTest extends \PHPUnit_Framework_TestCase
 {
-    private $dbMockConn;
     public $mockConnector;
     public $mockStatement;
     private $mockQuery;
-    private $mockModel;
-    private $dbMockStat;
 
     public function setUp()
     {
-        $this->mockModel = m::mock('Elchroy\PotatoORM\PotatoModel');
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
         $this->mockQuery = new PotatoQuery($this->mockConnector);
