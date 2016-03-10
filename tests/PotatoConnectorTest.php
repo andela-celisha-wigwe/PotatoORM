@@ -1,31 +1,28 @@
 <?php
 
-use Elchroy\PotatoORM\PotatoModel;
+use Elchroy\PotatoORM\PotatoConnector;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
-use org\bovigo\vfs\vfsStreamDirectory;
-use Elchroy\PotatoORM\PotatoConnector;
-
 
 class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 {
-
     private $root;
     private $connector;
     private $mockConnector;
+
     public function setUp()
     {
         $this->connector = new PotatoConnector();
         $this->mockConnector = m::mock('PotatoConnector');
-        $this->root =vfsStream::setup('home');
+        $this->root = vfsStream::setup('home');
         $configFile = vfsStream::url('home/config.ini');
-        $db = "[database]";
-        $host = "host = myhost";
-        $username = "username = myusername";
-        $password = "password =";
-        $dbname = "dbname = mydb";
-        $adaptar = "adaptar = mysql";
+        $db = '[database]';
+        $host = 'host = myhost';
+        $username = 'username = myusername';
+        $password = 'password =';
+        $dbname = 'dbname = mydb';
+        $adaptar = 'adaptar = mysql';
         file_put_contents($configFile, $db);
         file_put_contents($configFile, $host);
         file_put_contents($configFile, $username);
@@ -36,13 +33,13 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function testGetConfigurationWorks()
     {
-        $config = array(
-                "host" => "myhost",
-                "username" => "myusername",
-                "password" => "",
-                "dbname" => "mydb",
-                "adaptar" => "mysql",
-            );
+        $config = [
+                'host'     => 'myhost',
+                'username' => 'myusername',
+                'password' => '',
+                'dbname'   => 'mydb',
+                'adaptar'  => 'mysql',
+            ];
         $this->mockConnector->shouldReceive('getConfigurations')->andReturn($config);
         $result = $this->mockConnector->getConfigurations();
         $this->assertTrue($config == $result);
@@ -72,7 +69,6 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('myusername', $username);
     }
 
-
     public function testGetDBName()
     {
         $this->mockConnector->shouldReceive('getDBName')->andReturn('mysql');
@@ -81,19 +77,13 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('mysql', $dbname);
     }
 
-
     public function testGetPassWord()
     {
         $this->mockConnector->shouldReceive('getPassword')->andReturn('');
 
         $password = $this->mockConnector->getPassword();
-        $this->assertEquals('', $password   );
+        $this->assertEquals('', $password);
     }
-
-
-
-
-
 
     public function tekjhvbkstDirectoryIsCreated()
     {
