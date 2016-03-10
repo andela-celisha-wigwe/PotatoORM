@@ -2,12 +2,10 @@
 
 namespace Elchroy\PotatoORM;
 
-use Elchroy\PotatoORM\PotatoQuery;
-
 class PotatoModel
 {
     public $queryTo;
-    private $dataToSave = array();
+    private $dataToSave = [];
 
     public function __construct(PotatoQuery $potatoQuery = null)
     {
@@ -71,6 +69,7 @@ class PotatoModel
     public function insert()
     {
         $table = self::getClassTableName();
+
         return $this->queryTo->storeIn($table, $this->dataToSave);
 
         // return $this; // return the inserted object.
@@ -79,11 +78,11 @@ class PotatoModel
     public function update()
     {
         $table = self::getClassTableName();
+
         return $this->queryTo->updateAt($table, $this->dataToSave);
 
         // return $this; // Return the updated ogject.
     }
-
 
     public static function destroy($id, $query = null)
     {

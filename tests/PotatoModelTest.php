@@ -2,7 +2,6 @@
 
 // namespace Elchroy\ORM\Tests;
 
-use Elchroy\PotatoORM\PotatoQuery;
 use Elchroy\PotatoORM\PotatoModel;
 use Mockery as m;
 
@@ -59,17 +58,16 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         $this->mockQuery->shouldReceive('updateAt')->andReturn(true);
 
         $this->mockModel->id = 23;
-        $this->mockModel->name = "Harry";
+        $this->mockModel->name = 'Harry';
         $result = $this->mockModel->update();
 
         $this->assertTrue($result);
-
     }
 
     public function testInsertFunctionworks()
     {
         $this->mockQuery->shouldReceive('storeIn')->andReturn(true);
-        $this->mockModel->name = "harry";
+        $this->mockModel->name = 'harry';
         $result = $this->mockModel->insert();
         $this->assertTrue($result);
     }
