@@ -35,26 +35,37 @@ class PotatoQuery
         $statement = self::$connection->prepare($sql);
         $statement->bindParam(':id', $id);
         $statement->execute();
-
         return $result = $statement->fetchObject($table); // convert the object argument to
     }
 
-    public function storeIn($table, array $data)
+    public function storeIn($table, $data)
     {
         $columnsString = $this->getColumns($data);
         $count = (int) count($data);
         $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).')';
         $statement = self::$connection->prepare($sql);
         $this->setBindForInsert($statement, array_values($data));
-        if ($statement->execute() == false) {
+        $result = $statement->execute();
+        if ($result != true) {
             return false;
         }
-
-        return $statement->execute();
-        // $lastInserted = $statement->lastInsertId();
-        // return $this->getOne($table, $lastInserted);
-        // AFter inserting, the item that was inserted should be returned.
+        return $result;
     }
+
+    public function getColumns(array $data)
+    {
+        return '('.implode(', ', array_keys($data)).')';
+    }
+
+    public function setBindForInsert($statement, $values)
+    {
+        $count = count($values);
+        for ($i = 1; $i <= $count; $i++) {
+            $statement->bindParam(($i), $values[$i - 1]);
+        }
+    }
+
+
 
     public function deleteFrom($table, $id)
     {
@@ -68,20 +79,21 @@ class PotatoQuery
         return $statement->execute();
     }
 
-    public function updateAt($table, array $data)
+    public function updateAt($table, $data)
     {
         $id = (int) $data['id']; // store the id in a variable.
-        unset($data['id']); // remove the id key from the array. ID is to be used for the update location.
+        unset($data['id']);
         $upd = (string) $this->makeModify(array_keys($data)); // genertate the columns for the update statement.
         $sql = "UPDATE {$table} SET ".$upd.' WHERE id = :id_val';
         $statement = self::$connection->prepare($sql);
         $this->setBindForUpdate($statement, $data);
         $statement->bindValue(':id_val', $id);
-        if ($statement->execute() == false) {
+        $result = $statement->execute();
+        if ($result != true) {
             return false;
         }
 
-        return $statement->execute();
+        return $result;
     }
 
     public function setBindForUpdate($statement, array $data)
@@ -112,18 +124,5 @@ class PotatoQuery
         }
 
         return $str = trim($str, ', '); // remove the last comma.
-    }
-
-    public function setBindForInsert($statement, $values)
-    {
-        $count = count($values);
-        for ($i = 1; $i <= $count; $i++) {
-            $statement->bindParam(($i), $values[$i - 1]);
-        }
-    }
-
-    public function getColumns(array $data)
-    {
-        return '('.implode(', ', array_keys($data)).')';
     }
 }
