@@ -2,25 +2,60 @@
 
 namespace Elchroy\PotatoORM;
 
+use Elchroy\PotatoORM\PotatoQuery;
+
 class PotatoModel
 {
-    public static $buildTo;
-    public static $tableName;
+    public $queryTo;
+    private $dataToSave = array();
 
-    public static function getAll()
+    public function __construct(PotatoQuery $potatoQuery = null)
     {
-        $queryTo = new PotatoQuery();
-        $table = self::getClassTableName();
-
-        return $queryTo->getFrom($table);
+        if ($potatoQuery == null) {
+            $potatoQuery = new PotatoQuery();
+        }
+        $this->queryTo = $potatoQuery;
     }
 
-    public static function find($id)
+    public function __set($property, $value)
     {
-        $queryTo = new PotatoQuery();
+        // echo "setting $property to $value";
+        $this->dataToSave[$property] = $value;
+    }
+
+    public function __get($property)
+    {
+        if (array_key_exists($property, $this->dataToSave)) {
+            return $this->dataToSave[$property];
+        }
+        echo "$property not found.";
+        // Throw an exception
+        // echo "Inside the get method.";
+    }
+
+    public function __isset($property)
+    {
+        return isset($this->dataToSave[$property]);
+    }
+
+    public static function getAll($query = null)
+    {
+        if ($query == null) {
+            $query = new PotatoQuery();
+        }
         $table = self::getClassTableName();
 
-        return $queryTo->getOne($table, $id);
+        return $query->getFrom($table);
+    }
+
+    public static function find($id, $query = null)
+    {
+        if ($query == null) {
+            $query = new PotatoQuery();
+        }
+        $table = self::getClassTableName();
+
+        return $query->getOne($table, $id);
     }
 
     public function save()
@@ -35,27 +70,28 @@ class PotatoModel
 
     public function insert()
     {
-        $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
-        $queryTo->storeIn($table, (array) $this);
+        return $this->queryTo->storeIn($table, $this->dataToSave);
 
-        return $this; // return the inserted object.
+        // return $this; // return the inserted object.
     }
 
     public function update()
     {
-        $queryTo = new PotatoQuery();
         $table = self::getClassTableName();
-        $queryTo->updateAt($table, (array) $this);
+        return $this->queryTo->updateAt($table, $this->dataToSave);
 
-        return $this; // Return the updated ogject.
+        // return $this; // Return the updated ogject.
     }
 
-    public static function destroy($id)
+
+    public static function destroy($id, $query = null)
     {
-        $queryTo = new PotatoQuery();
+        if ($query == null) {
+            $query = new PotatoQuery();
+        }
         $table = self::getClassTableName();
-        $queryTo->deleteFrom($table, $id);
+        $query->deleteFrom($table, $id);
 
         return self::getAll(); // return all the items after the previous item has been deleted.
     }
