@@ -35,6 +35,7 @@ class PotatoQuery
         $statement = self::$connection->prepare($sql);
         $statement->bindParam(':id', $id);
         $statement->execute();
+
         return $result = $statement->fetchObject($table); // convert the object argument to
     }
 
@@ -49,6 +50,7 @@ class PotatoQuery
         if ($result != true) {
             return false;
         }
+
         return $result;
     }
 
@@ -64,8 +66,6 @@ class PotatoQuery
             $statement->bindParam(($i), $values[$i - 1]);
         }
     }
-
-
 
     public function deleteFrom($table, $id)
     {
