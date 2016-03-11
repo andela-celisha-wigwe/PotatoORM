@@ -97,7 +97,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function testConnectFunction()
     {
-        $connection = $this->connector->connect('mysql', 'localhost', 'orm', 'root', '');
+        $connection = $this->connector->connect('mysql', 'myhost', 'dbname', 'myusername', '');
         // $connection = $this->connector->connect($this->expectedconfig['adaptar'], $this->expectedconfig['host'], $this->expectedconfig['dbname'], $this->expectedconfig['username'], $this->expectedconfig['password']);
         // $this->assertEquals($this->mockConnector, $connection);
 
