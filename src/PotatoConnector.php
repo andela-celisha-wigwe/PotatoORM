@@ -7,10 +7,14 @@ use PDO;
 class PotatoConnector
 {
     public static $connection;
-    public static $conn;
+    public $configuration;
 
-    public function __construct()
+    public function __construct($configurationData = null)
     {
+        if ($configurationData == null) {
+            $configurationData = self::getConfigurations();
+        }
+        $this->configuration = $configurationData;
     }
 
     public static function setConnection()
@@ -25,41 +29,59 @@ class PotatoConnector
         return self::$connection;
     }
 
-    private static function connect($adaptar, $host, $dbname, $username, $password)
+    public static function connect($adaptar = null, $host = null, $dbname = null, $username = null, $password = null)
     {
+        if (is_null($adaptar)) {
+            $adaptar = $this->getAdaptar();
+        }
+        if (is_null($host)) {
+            $host = $this->getHost();
+        }
+        if (is_null($dbname)) {
+            $dbname = $this->getDBName();
+        }
+        if (is_null($username)) {
+            $username = $this->getUsername();
+        }
+        if (is_null($adaptar)) {
+            $password = $this->getPassword();
+        }
         $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         return $connection;
     }
 
-    public static function getConfigurations()
+    public static function getConfigurations($filepath = null)
     {
-        return $config = parse_ini_file(__DIR__.'/../config.ini');
+        if ($filepath == null) {
+            $filepath = __DIR__.'/../config.ini';
+        }
+        return parse_ini_file($filepath);
     }
 
-    private static function getAdaptar()
+    public function getAdaptar()
     {
-        return self::getConfigurations()['adaptar'];
+        return $this->configuration['adaptar'];
     }
 
-    private static function getHost()
+    public function getHost()
     {
-        return self::getConfigurations()['host'];
+        return $this->configuration['host'];
     }
 
-    private static function getDBName()
+    public function getDBName()
     {
-        return self::getConfigurations()['dbname'];
+        return $this->configuration['dbname'];
     }
 
-    private static function getUsername()
+    public function getUsername()
     {
-        return self::getConfigurations()['username'];
+        return $this->configuration['username'];
     }
 
-    private static function getPassword()
+    public function getPassword()
     {
-        return self::getConfigurations()['password'];
+        return $this->configuration['password'];
     }
 }
