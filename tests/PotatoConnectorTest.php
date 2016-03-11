@@ -1,96 +1,110 @@
 <?php
 
-use Elchroy\PotatoORM\PotatoConnector;
+use Elchroy\PotatoORM\PotatoModel;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
+use Elchroy\PotatoORM\PotatoConnector;
+
 
 class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 {
+
     private $root;
     private $connector;
-    private $mockConnector;
+    private $mockConnection;
+    private $configFile;
+    private $expectedconfig;
+    private $adaptar;
+    private $host;
+    private $dbname;
+    private $username;
+    private $password;
+    private $dsn;
 
     public function setUp()
     {
-        $this->connector = new PotatoConnector();
-        $this->mockConnector = m::mock('PotatoConnector');
-        $this->root = vfsStream::setup('home');
-        $configFile = vfsStream::url('home/config.ini');
-        $db = '[database]';
-        $host = 'host = myhost';
-        $username = 'username = myusername';
-        $password = 'password =';
-        $dbname = 'dbname = mydb';
-        $adaptar = 'adaptar = mysql';
-        file_put_contents($configFile, $db);
-        file_put_contents($configFile, $host);
-        file_put_contents($configFile, $username);
-        file_put_contents($configFile, $password);
-        file_put_contents($configFile, $dbname);
-        file_put_contents($configFile, $adaptar);
-    }
+        $this->expectedconfig = array(
+                "host" => "myhost",
+                "username" => "myusername",
+                "password" => "",
+                "dbname" => "mydb",
+                "adaptar" => "mysql",
+            );
+        $this->adaptar = $this->expectedconfig['adaptar'];
+        $this->host = $this->expectedconfig['host'];
+        $this->dbname = $this->expectedconfig['dbname'];
+        $this->username = $this->expectedconfig['username'];
+        $this->password = $this->expectedconfig['password'];
+        $this->dsn = "$this->adaptar:host=$this->host;dbname=$this->dbname";
 
-    public function testGetConfigurationWorks()
-    {
-        $config = [
-                'host'     => 'myhost',
-                'username' => 'myusername',
-                'password' => '',
-                'dbname'   => 'mydb',
-                'adaptar'  => 'mysql',
-            ];
-        $this->mockConnector->shouldReceive('getConfigurations')->andReturn($config);
-        $result = $this->mockConnector->getConfigurations();
-        $this->assertTrue($config == $result);
+        $this->root =vfsStream::setup('home');
+        $this->configFile = vfsStream::url('home/config.ini');
+
+        $this->connector = new PotatoConnector($this->expectedconfig);
+        // $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
     }
 
     public function testGetAdaptar()
     {
-        $this->mockConnector->shouldReceive('getAdaptar')->andReturn('mysql');
-
-        $adaptar = $this->mockConnector->getAdaptar();
+        $adaptar = $this->connector->getAdaptar();
         $this->assertEquals('mysql', $adaptar);
     }
 
     public function testGetHost()
     {
-        $this->mockConnector->shouldReceive('getHost')->andReturn('myhost');
-
-        $host = $this->mockConnector->getHost();
+        $host = $this->connector->getHost();
         $this->assertEquals('myhost', $host);
     }
 
     public function testGetUsername()
     {
-        $this->mockConnector->shouldReceive('getUsername')->andReturn('myusername');
-
-        $username = $this->mockConnector->getUsername();
+        $username = $this->connector->getUsername();
         $this->assertEquals('myusername', $username);
     }
 
     public function testGetDBName()
     {
-        $this->mockConnector->shouldReceive('getDBName')->andReturn('mysql');
-
-        $dbname = $this->mockConnector->getDBName();
-        $this->assertEquals('mysql', $dbname);
+        $dbname = $this->connector->getDBName();
+        $this->assertEquals('mydb', $dbname);
     }
 
     public function testGetPassWord()
     {
-        $this->mockConnector->shouldReceive('getPassword')->andReturn('');
-
-        $password = $this->mockConnector->getPassword();
-        $this->assertEquals('', $password);
+        $password = $this->connector->getPassword();
+        $this->assertEquals('', $password   );
     }
 
-    public function tekjhvbkstDirectoryIsCreated()
+    public function testGetConfigurations()
     {
-        $connection = new PotatoConnector();
-        $this->assertFalse(vfsStreamWrapper::getRoot()->hasChild('id'));
+        $file = fopen($this->configFile, "a");
+        $configData = array(
+                    "[database]",
+                    "host = myhost",
+                    "username = myusername",
+                    "password = ",
+                    "dbname = mydb",
+                    "adaptar = mysql",
+            );
+        foreach ($configData as $cfg) {
+            fwrite($file, $cfg."\n");
+        }
+        fclose($file);
+        $result = $this->connector->getConfigurations($this->configFile);
+        $this->assertEquals($this->expectedconfig, $result);
+    }
 
-        $connection->getConfigurations(vfsStream::url('dbDirectory'));
-        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild('configs'));
+    public function testConnectFunction()
+    {
+        // $connection = $this->connector->connect('mysql', 'myhost', 'dbname', 'myusername', '');
+        // $connection = $this->connector->connect($this->expectedconfig['adaptar'], $this->expectedconfig['host'], $this->expectedconfig['dbname'], $this->expectedconfig['username'], $this->expectedconfig['password']);
+        // $this->assertEquals($this->mockConnector, $connection);
+
+    }
+
+    public function testSetConnection()
+    {
+
     }
 }

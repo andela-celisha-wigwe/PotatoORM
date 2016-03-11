@@ -1,0 +1,6 @@
+[database]
+host = myhost
+username = myusername
+password =
+dbname = mydb
+adaptar = mysql
