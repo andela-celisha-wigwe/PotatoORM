@@ -11,6 +11,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
     public $mockStatement;
     private $mockQuery;
     private $mockModel;
+    private $model;
 
     public function setUp()
     {
@@ -19,11 +20,38 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel2 = PotatoModel::find(4);
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
+        $this->model = new PotatoModel();
     }
 
     public function teardDown()
     {
         // m::close();
+    }
+
+    public function testModelHasQuweryIfNull()
+    {
+        $modelQuery = $this->model->queryTo;
+        $this->assertInstanceOf('Elchroy\PotatoORM\PotatoQuery', $modelQuery);
+    }
+
+    public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
+    {
+        $this->model->name = "Puffy";
+        $name = $this->model->name;
+        $this->assertTrue($name == "Puffy");
+    }
+
+    public function testGetMagicFunctionDoesNotWorkIfCalledREquesIsNotInDataToSave()
+    {
+        $this->model->name = "Puffy";
+        unset($this->model->dataToSave['name']);
+        $name = $this->model->name;
+        $this->assertEquals("name not found.", $name);
+    }
+
+    public function testMagicFunctionIsSetWorks()
+    {
+
     }
 
     public function testGetAllFunctionWorks()
@@ -34,6 +62,31 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel->shouldReceive('getAll')->once()->andReturn(["name" => "Bolt", "price" => 4567]);
         // $expected = $this->mockModel->getAll();
         // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
+    }
+
+    public function testGetAllFunctionWorksWithNullAsQuery()
+    {
+    }
+
+    public function testIsStoredFunctionWorksForFalse()
+    {
+        $model = new PotatoModel();
+        $result = $model->isStored();
+        $this->assertFalse($result);
+    }
+
+    public function testIsStoredFunctionWorksForTrue()
+    {
+        $model = new PotatoModel();
+        $model->id = 34;
+        $result = $model->isStored();
+        $this->assertTrue($result);
+    }
+
+
+
+    public function testModelSave()
+    {
     }
 
     public function testGetClassTableNameWorks()
