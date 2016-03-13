@@ -66,9 +66,14 @@ class PotatoConnector
     public function getConfigurations($filepath = null)
     {
         if ($filepath == null) {
-            $filepath = __DIR__.'/../config.ini';
+            $filepath = $this->getConfigFilePath();
         }
         return parse_ini_file($filepath);
+    }
+
+    public function getConfigFilePath()
+    {
+        return __DIR__.'/../config.ini';
     }
 
     public function getAdaptar()
