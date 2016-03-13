@@ -12,6 +12,8 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
+        $this->mockConnection = m::mock('PDO');
+        $this->mockConnector->shouldReceive('setConnection')->andReturn($this->mockConnection);
         $this->mockStatement = m::mock('PDOStatement');
         $this->mockQuery = new PotatoQuery($this->mockConnector);
     }
@@ -19,9 +21,11 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function testGetFrom()
     {
         $sql = 'SELECT name, price FROM orders';
-        $this->mockConnector->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        // $this->mockConnector->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('execute');
-        $this->mockStatement->shouldReceive('fetchAll')->with(\PDO::FETCH_OBJ)->andReturn(new stdClass());
+        $this->mockStatement->shouldReceive('fetchAll')->with(\PDO::FETCH_CLASS)->andReturn(new stdClass());
+        // $this->mockStatement->shouldReceive('fetchObject')->with('orders')->andReturn(true);
 
         $result = $this->mockQuery->getFrom('orders', 'name, price');
         $this->assertInstanceOf('stdClass', $result);
@@ -30,7 +34,7 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function testGetOne()
     {
         $sql = 'SELECT * FROM people WHERE id = :id ';
-        $this->mockConnector->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('bindParam')->once()->with(':id', 43);
         $this->mockStatement->shouldReceive('execute');
         $this->mockStatement->shouldReceive('fetchObject')->with('people')->andReturn(new stdClass());
@@ -43,7 +47,7 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     {
         $data = ['name' => 'Diamane', 'rooms' => 400];
         $sql = 'INSERT INTO hotels (name, rooms) VALUES (?, ?)';
-        $this->mockConnector->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('bindParam')->once()->with(1, 'Diamane');
         $this->mockStatement->shouldReceive('bindParam')->once()->with(2, 400);
         $this->mockStatement->shouldReceive('execute')->andReturn(true);
@@ -69,7 +73,7 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function testDeleteWorks()
     {
         $sql = 'DELETE FROM people WHERE id = :id ';
-        $this->mockConnector->shouldReceive('prepare')->with($sql)->andReturn($this->mockStatement);
+        $this->mockConnection->shouldReceive('prepare')->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('bindParam')->with(':id', 43);
         $this->mockStatement->shouldReceive('execute')->andReturn(true);
 
@@ -80,7 +84,7 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function testUpdateFunctionworks()
     {
         $sql = 'UPDATE hotels SET name = :name_val, location = :location_val WHERE id = :id_val';
-        $this->mockConnector->shouldReceive('prepare')->with($sql)->andReturn($this->mockStatement);
+        $this->mockConnection->shouldReceive('prepare')->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('bindValue')->with(':name_val', 'Diamane');
         $this->mockStatement->shouldReceive('bindValue')->with(':location_val', 'CapeTown, S-Africa');
         $this->mockStatement->shouldReceive('bindValue')->with(':id_val', 32);

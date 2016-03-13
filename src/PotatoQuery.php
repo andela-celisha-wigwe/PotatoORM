@@ -2,29 +2,38 @@
 
 namespace Elchroy\PotatoORM;
 
+use Elchroy\PotatoORMExceptions\FaultyOrNoTableException;
+use Elchroy\PotatoORMExceptions\FaultyExecutionException;
+
 // require '../vendor/autoload.php';
 
 use PDO;
+use PDOException;
 
 class PotatoQuery
 {
-    public static $connection;
+    public $connection;
 
-    public function __construct($con = null)
+    public function __construct(PotatoConnector $connector = null)
     {
-        if ($con == null) {
-            self::$connection = (PotatoConnector::setConnection());
-        } else {
-            self::$connection = $con;
+        if ($connector == null) {
+            $connector = new PotatoConnector();
         }
+        $this->connection = $connector->setConnection();
     }
 
     public function getFrom($table, $columns = '*')
     {
         $sql = "SELECT $columns FROM $table";
-        $statement = self::$connection->prepare($sql);
-        $statement->execute();
-        $result = $statement->fetchAll(PDO::FETCH_OBJ);
+        $statement = $this->connection->prepare($sql);
+        if ($statement == false) {
+            $this->throwFaultyOrNoTableException($table);
+        }
+        $execution = $this->tryExecuting($statement);
+        $result = $statement->fetchAll(PDO::FETCH_CLASS);
+        if (count($result) < 1) {
+            return "No records found in this table ($table).";
+        }
 
         return $result;
     }
@@ -32,11 +41,18 @@ class PotatoQuery
     public function getOne($table, $id)
     {
         $sql = "SELECT * FROM $table WHERE id = :id ";
-        $statement = self::$connection->prepare($sql);
+        $statement = $this->connection->prepare($sql);
+        if ($statement == false) {
+            $this->throwFaultyOrNoTableException($table);
+        }
         $statement->bindParam(':id', $id);
-        $statement->execute();
-
-        return $result = $statement->fetchObject($table); // convert the object argument to
+        $execution = $this->tryExecuting($statement);
+        $result = $statement->fetchObject($table);
+        // $result = $statement->fetch(PDO::FETCH_OBJ);
+        if ($result == false) {
+            echo "Throw Fetching Exception. Record $id : Not found found in this table ($table).";
+        }
+        return $result;
     }
 
     public function storeIn($table, $data)
@@ -44,14 +60,33 @@ class PotatoQuery
         $columnsString = $this->getColumns($data);
         $count = (int) count($data);
         $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).')';
-        $statement = self::$connection->prepare($sql);
-        $this->setBindForInsert($statement, array_values($data));
-        $result = $statement->execute();
-        if ($result != true) {
-            return false;
+        $statement = $this->connection->prepare($sql);
+        if ($statement == false) {
+            $this->throwFaultyOrNoTableException($table);
         }
+        $this->setBindForInsert($statement, array_values($data));
+        $execution = $this->tryExecuting($statement);
+        echo "Saved Successfully.\n";
+        return $execution;
+        // return $this->getOne($table, self::$connection->lastInsertId());
+    }
 
-        return $result;
+    public function tryExecuting($statement)
+    {
+        try {
+            $execution = $statement->execute();
+        } catch (PDOException $e) {
+            $message = $e->getMessage();
+            $this->throwFaultyExecutionException($message);
+        }
+        // var_dump($execution);
+
+        return $execution;
+    }
+
+    public function throwFaultyExecutionException($message)
+    {
+        throw new FaultyExecutionException($message);
     }
 
     public function getColumns(array $data)
@@ -70,13 +105,16 @@ class PotatoQuery
     public function deleteFrom($table, $id)
     {
         $sql = "DELETE FROM $table WHERE id = :id ";
-        $statement = self::$connection->prepare($sql);
-        $statement->bindParam(':id', $id);
-        if ($statement->execute() == false) {
-            return false;
+        $statement = $this->connection->prepare($sql);
+        if ($statement == false) {
+            $this->throwFaultyOrNoTableException($table);
         }
+        $statement->bindParam(':id', $id);
+        $execution = $this->tryExecuting($statement);
+        echo "Deleted Successfully.\n";
 
-        return $statement->execute();
+        return $execution;
+
     }
 
     public function updateAt($table, $data)
@@ -85,15 +123,16 @@ class PotatoQuery
         unset($data['id']);
         $upd = (string) $this->makeModify(array_keys($data)); // genertate the columns for the update statement.
         $sql = "UPDATE {$table} SET ".$upd.' WHERE id = :id_val';
-        $statement = self::$connection->prepare($sql);
+        $statement = $this->connection->prepare($sql);
+        if ($statement == false) {
+            $this->throwFaultyOrNoTableException($table);
+        }
         $this->setBindForUpdate($statement, $data);
         $statement->bindValue(':id_val', $id);
-        $result = $statement->execute();
-        if ($result != true) {
-            return false;
-        }
+        $execution = $this->tryExecuting($statement);
+        echo "Updated Successfully.\n";
 
-        return $result;
+        return $execution;
     }
 
     public function setBindForUpdate($statement, array $data)
@@ -124,5 +163,11 @@ class PotatoQuery
         }
 
         return $str = trim($str, ', '); // remove the last comma.
+    }
+
+    public function throwFaultyOrNoTableException($table)
+    {
+        $message = "There seems to be a problem. Please confirm if the '$table' table exists in the database.";
+        throw new FaultyOrNoTableException($message);
     }
 }
