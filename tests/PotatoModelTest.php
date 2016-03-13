@@ -28,7 +28,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // m::close();
     }
 
-    public function testModelHasQuweryIfNull()
+    public function NotestModelHasQueryIfNull()
     {
         $modelQuery = $this->model->queryTo;
         $this->assertInstanceOf('Elchroy\PotatoORM\PotatoQuery', $modelQuery);
