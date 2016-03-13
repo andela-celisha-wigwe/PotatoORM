@@ -5,7 +5,7 @@ namespace Elchroy\PotatoORM;
 class PotatoModel
 {
     public $queryTo;
-    private $dataToSave = [];
+    public $dataToSave = [];
 
     public function __construct(PotatoQuery $potatoQuery = null)
     {
@@ -17,7 +17,6 @@ class PotatoModel
 
     public function __set($property, $value)
     {
-        // echo "setting $property to $value";
         $this->dataToSave[$property] = $value;
     }
 
@@ -26,7 +25,7 @@ class PotatoModel
         if (array_key_exists($property, $this->dataToSave)) {
             return $this->dataToSave[$property];
         }
-        echo "$property not found.";
+        return "$property not found.";
         // Throw an exception
         // echo "Inside the get method.";
     }
