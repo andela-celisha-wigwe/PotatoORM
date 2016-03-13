@@ -28,7 +28,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // m::close();
     }
 
-    public function NotestModelHasQueryIfNull()
+    public function testModelHasQueryIfNull()
     {
         $modelQuery = $this->model->queryTo;
         $this->assertInstanceOf('Elchroy\PotatoORM\PotatoQuery', $modelQuery);
@@ -36,25 +36,32 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
     {
-        $this->model->name = "Puffy";
-        $name = $this->model->name;
+        $model = new PotatoModel($this->mockQuery);
+        $model->name = "Puffy";
+        $name = $model->name;
+        $this->assertContains('name', array_keys($model->dataToSave));
         $this->assertTrue($name == "Puffy");
     }
 
     public function testGetMagicFunctionDoesNotWorkIfCalledREquesIsNotInDataToSave()
     {
-        $this->model->name = "Puffy";
-        unset($this->model->dataToSave['name']);
-        $name = $this->model->name;
+        $model = new PotatoModel($this->mockQuery);
+        $name = $model->name;
+        $this->assertNotContains('name', $model->dataToSave);
         $this->assertEquals("name not found.", $name);
     }
 
-    public function testMagicFunctionIsSetWorks()
+    public function tesnotMagicFunctionIsSetWorks()
     {
-
+        $this->getMockBuilder('PotatoModel')
+        ->setMethods(array('insert'))
+        ->getMock();
+        $this->expects($this->once())
+        ->method('handleValue')
+        ->will($this->returnValue(23)); //Whatever value you want to return
     }
 
-    public function testGetAllFunctionWorks()
+    public function nonotestGetAllFunctionWorks()
     {
         // $this->mockModel->shouldReceive('getAll')->andReturn(new stdClass());
         // $result = Elchroy\PotatoORM\PotatoModel::getAll();
@@ -70,14 +77,14 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testIsStoredFunctionWorksForFalse()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $result = $model->isStored();
         $this->assertFalse($result);
     }
 
     public function testIsStoredFunctionWorksForTrue()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $model->id = 34;
         $result = $model->isStored();
         $this->assertTrue($result);

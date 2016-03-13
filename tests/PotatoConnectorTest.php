@@ -76,7 +76,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $password   );
     }
 
-    public function testGetConfigurations()
+    public function testGetConfigurationsIfGivenFilePath()
     {
         $file = fopen($this->configFile, "a");
         $configData = array(
@@ -93,6 +93,11 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         fclose($file);
         $result = $this->connector->getConfigurations($this->configFile);
         $this->assertEquals($this->expectedconfig, $result);
+    }
+
+    public function testGetConfigurationsIfNotGivenFilePath()
+    {
+        // $connector = new PotatoConnector();
     }
 
     public function testConnectFunction()
