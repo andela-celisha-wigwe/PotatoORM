@@ -3,33 +3,39 @@
 namespace Elchroy\PotatoORM;
 
 use PDO;
+Use PDOException;
+use Elchroy\PotatoORMExceptions\FaultyConnectionException;
 
 class PotatoConnector
 {
-    public static $connection;
+    public $connection;
     public $configuration;
 
-    public function __construct($configurationData = null)
+    public function __construct($configurationData = null, $connection = null)
     {
         if ($configurationData == null) {
-            $configurationData = self::getConfigurations();
+            $configurationData = $this->getConfigurations();
         }
+        if ($connection = null) {
+            $connection = $this->connect();
+        }
+        $this->connection = $connection;
         $this->configuration = $configurationData;
     }
 
-    public static function setConnection()
+    public function setConnection()
     {
-        $adaptar = self::getAdaptar();
-        $host = self::getHost();
-        $dbname = self::getDBName();
-        $username = self::getUsername();
-        $password = self::getPassword();
-        self::$connection = self::connect($adaptar, $host, $dbname, $username, $password);
+        $adaptar = $this->getAdaptar();
+        $host = $this->getHost();
+        $dbname = $this->getDBName();
+        $username = $this->getUsername();
+        $password = $this->getPassword();
+        $connection = $this->connect($adaptar, $host, $dbname, $username, $password);
 
-        return self::$connection;
+        return $connection;
     }
 
-    public static function connect($adaptar = null, $host = null, $dbname = null, $username = null, $password = null)
+    public function connect($adaptar = null, $host = null, $dbname = null, $username = null, $password = null)
     {
         if (is_null($adaptar)) {
             $adaptar = $this->getAdaptar();
@@ -46,13 +52,18 @@ class PotatoConnector
         if (is_null($adaptar)) {
             $password = $this->getPassword();
         }
-        $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        try {
+            $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            $message = $e->getMessage();
+            $this->throwFaultyConnectionException($message);
+            exit;
+        }
         return $connection;
     }
 
-    public static function getConfigurations($filepath = null)
+    public function getConfigurations($filepath = null)
     {
         if ($filepath == null) {
             $filepath = __DIR__.'/../config.ini';
@@ -83,5 +94,10 @@ class PotatoConnector
     public function getPassword()
     {
         return $this->configuration['password'];
+    }
+
+    public function throwFaultyConnectionException($message)
+    {
+        throw new FaultyConnectionException($message);
     }
 }
