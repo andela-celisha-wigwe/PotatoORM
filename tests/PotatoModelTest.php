@@ -20,7 +20,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel2 = PotatoModel::find(4);
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
-        // $this->model = new PotatoModel();
+        $this->model = new PotatoModel();
     }
 
     public function teardDown()
@@ -28,7 +28,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // m::close();
     }
 
-    public function NotestModelHasQueryIfNull()
+    public function testModelHasQueryIfNull()
     {
         $modelQuery = $this->model->queryTo;
         $this->assertInstanceOf('Elchroy\PotatoORM\PotatoQuery', $modelQuery);
@@ -36,7 +36,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $model->name = "Puffy";
         $name = $model->name;
         $this->assertContains('name', array_keys($model->dataToSave));
@@ -45,7 +45,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMagicFunctionDoesNotWorkIfCalledREquesIsNotInDataToSave()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $name = $model->name;
         $this->assertNotContains('name', $model->dataToSave);
         $this->assertEquals("name not found.", $name);

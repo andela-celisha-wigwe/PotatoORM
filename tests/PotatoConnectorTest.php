@@ -97,7 +97,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function testGetConfigurationsIfNotGivenFilePath()
     {
-
+        // $connector = new PotatoConnector();
     }
 
     public function testConnectFunction()

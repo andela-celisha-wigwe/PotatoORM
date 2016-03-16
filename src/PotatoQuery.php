@@ -66,7 +66,6 @@ class PotatoQuery
         }
         $this->setBindForInsert($statement, array_values($data));
         $execution = $this->tryExecuting($statement);
-        echo "Saved Successfully.\n";
         return $execution;
         // return $this->getOne($table, self::$connection->lastInsertId());
     }
@@ -111,7 +110,6 @@ class PotatoQuery
         }
         $statement->bindParam(':id', $id);
         $execution = $this->tryExecuting($statement);
-        echo "Deleted Successfully.\n";
 
         return $execution;
 
@@ -130,7 +128,6 @@ class PotatoQuery
         $this->setBindForUpdate($statement, $data);
         $statement->bindValue(':id_val', $id);
         $execution = $this->tryExecuting($statement);
-        echo "Updated Successfully.\n";
 
         return $execution;
     }
