@@ -20,18 +20,11 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel2 = PotatoModel::find(4);
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
-        $this->model = new PotatoModel();
     }
 
     public function teardDown()
     {
         // m::close();
-    }
-
-    public function testModelHasQueryIfNull()
-    {
-        $modelQuery = $this->model->queryTo;
-        $this->assertInstanceOf('Elchroy\PotatoORM\PotatoQuery', $modelQuery);
     }
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
