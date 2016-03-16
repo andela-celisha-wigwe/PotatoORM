@@ -36,7 +36,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $model->name = "Puffy";
         $name = $model->name;
         $this->assertContains('name', array_keys($model->dataToSave));
@@ -45,7 +45,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetMagicFunctionDoesNotWorkIfCalledREquesIsNotInDataToSave()
     {
-        $model = new PotatoModel();
+        $model = new PotatoModel($this->mockQuery);
         $name = $model->name;
         $this->assertNotContains('name', $model->dataToSave);
         $this->assertEquals("name not found.", $name);
