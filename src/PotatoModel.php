@@ -92,7 +92,7 @@ class PotatoModel
         return self::getAll(); // return all the items after the previous item has been deleted.
     }
 
-    protected static function getClassTableName()
+    public static function getClassTableName()
     {
         $tableWithNameSpance = strtolower(get_called_class());
         $table = explode('\\', $tableWithNameSpance);

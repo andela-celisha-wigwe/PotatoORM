@@ -30,16 +30,16 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         //Open the database mydb
         $this->db = new SQLite3('mydb');
         //Create a basic users table
-        $this->db->exec('CREATE TABLE IF NOT EXISTS dog (id int(25), name varchar (255), price int(10))');
+        $this->db->exec('CREATE TABLE IF NOT EXISTS potatomodel (id int(25), name varchar (255), price int(10))');
         // echo "Table users has been created <br />";
         //Insert some rows
-        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (1, "Bolt", 35000)');
+        $this->db->exec('INSERT INTO potatomodel (id, name, price) VALUES (1, "Bolt", 35000)');
         // echo "Inserted row into table users <br />";
-        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (2, "Spyk", 25000)');
+        $this->db->exec('INSERT INTO potatomodel (id, name, price) VALUES (2, "Spyk", 25000)');
         //Insert some rows
-        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (3, "Halx", 35500)');
+        $this->db->exec('INSERT INTO potatomodel (id, name, price) VALUES (3, "Halx", 35500)');
         // echo "Inserted row into table users <br />";
-        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (4, "Ferr", 28700)');
+        $this->db->exec('INSERT INTO potatomodel (id, name, price) VALUES (4, "Ferr", 28700)');
 
         $this->expectedconfig = array(
                 "host" => "myhost",
@@ -60,8 +60,8 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
         $this->connector = new PotatoConnector($this->expectedconfig);
         // $this->mockConnection = m::mock('PDO');
-        // $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
-        $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
+        $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
+        // $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
     }
 
     public function testGetAdaptar()
@@ -123,6 +123,18 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $connection = $this->connector->connect($this->adaptar, $this->host, $this->dbname, $this->username, $this->password);
         $this->assertInstanceOf('PDO', $connection);
     }
+
+    /**
+     * @expectedException Elchroy\PotatoORMExceptions\FaultyConnectionException
+     *
+     * @expectedExceptionMessage could not find driver
+     */
+    public function testSetConnectionFunctionThrowsException()
+    {
+        $connection = $this->connector->connect('wrongAdaptar', 'wrongHostname', 'wrongDbName', 'wrongUsername', 'wrongPassword');
+        $this->assertInstanceOf('PDO', $connection);
+    }
+
 
     public function testSetConnection()
     {
