@@ -2,9 +2,8 @@
 
 namespace Elchroy\PotatoORM;
 
-use Elchroy\PotatoORMExceptions\FaultyOrNoTableException;
 use Elchroy\PotatoORMExceptions\FaultyExecutionException;
-
+use Elchroy\PotatoORMExceptions\FaultyOrNoTableException;
 // require '../vendor/autoload.php';
 
 use PDO;
@@ -50,6 +49,7 @@ class PotatoQuery
         if ($result == false) {
             echo "Throw Fetching Exception. Record $id : Not found found in this table ($table).";
         }
+
         return $result;
     }
 
@@ -64,6 +64,7 @@ class PotatoQuery
         }
         $this->setBindForInsert($statement, array_values($data));
         $execution = $this->tryExecuting($statement);
+
         return $execution;
         // return $this->getOne($table, self::$connection->lastInsertId());
     }
@@ -109,7 +110,6 @@ class PotatoQuery
         $execution = $this->tryExecuting($statement);
 
         return $execution;
-
     }
 
     public function updateAt($table, $data)

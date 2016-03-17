@@ -31,7 +31,6 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $result);
     }
 
-
     /**
      * @expectedException Elchroy\PotatoORMExceptions\FaultyExecutionException
      *
@@ -57,9 +56,6 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $result = $this->mockQuery->getFrom('people', 'name, price');
     }
 
-
-
-
     /**
      * @expectedException Elchroy\PotatoORMExceptions\FaultyOrNoTableException
      *
@@ -81,9 +77,6 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     public function teddstTryExceutingThrowsException()
     {
     }
-
-
-
 
     public function testGetOne()
     {
