@@ -2,16 +2,16 @@
 
 namespace Elchroy\PotatoORM;
 
-use PDO;
-Use PDOException;
 use Elchroy\PotatoORMExceptions\FaultyConnectionException;
+use PDO;
+use PDOException;
 
 class PotatoConnector
 {
     public $connection;
     public $configuration;
 
-    public function __construct(Array $configurationData = null, PDO $connection = null)
+    public function __construct(array $configurationData = null, PDO $connection = null)
     {
         // if ($configurationData == null) {
         //     $configurationData = $this->getConfigurations();
@@ -45,6 +45,7 @@ class PotatoConnector
             $message = $e->getMessage();
             $this->throwFaultyConnectionException($message);
         }
+
         return $connection;
     }
 
@@ -53,6 +54,7 @@ class PotatoConnector
         if ($filepath == null) {
             $filepath = $this->getConfigFilePath();
         }
+
         return parse_ini_file($filepath);
     }
 

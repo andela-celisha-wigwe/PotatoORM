@@ -23,6 +23,7 @@ class PotatoModel
         if (array_key_exists($property, $this->dataToSave)) {
             return $this->dataToSave[$property];
         }
+
         return "$property not found.";
         // Throw an exception
         // echo "Inside the get method.";
