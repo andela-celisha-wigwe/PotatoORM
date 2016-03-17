@@ -22,15 +22,31 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     private $username;
     private $password;
     private $dsn;
+    private $db;
+
 
     public function setUp()
     {
+        //Open the database mydb
+        $this->db = new SQLite3('mydb');
+        //Create a basic users table
+        $this->db->exec('CREATE TABLE IF NOT EXISTS dog (id int(25), name varchar (255), price int(10))');
+        // echo "Table users has been created <br />";
+        //Insert some rows
+        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (1, "Bolt", 35000)');
+        // echo "Inserted row into table users <br />";
+        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (2, "Spyk", 25000)');
+        //Insert some rows
+        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (3, "Halx", 35500)');
+        // echo "Inserted row into table users <br />";
+        $this->db->exec('INSERT INTO dog (id, name, price) VALUES (4, "Ferr", 28700)');
+
         $this->expectedconfig = array(
                 "host" => "myhost",
                 "username" => "myusername",
                 "password" => "",
                 "dbname" => "mydb",
-                "adaptar" => "mysql",
+                "adaptar" => "sqlite",
             );
         $this->adaptar = $this->expectedconfig['adaptar'];
         $this->host = $this->expectedconfig['host'];
@@ -43,13 +59,15 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->configFile = vfsStream::url('home/config.ini');
 
         $this->connector = new PotatoConnector($this->expectedconfig);
-        // $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
+        // $this->mockConnection = m::mock('PDO');
+        $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
+        // $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
     }
 
     public function testGetAdaptar()
     {
         $adaptar = $this->connector->getAdaptar();
-        $this->assertEquals('mysql', $adaptar);
+        $this->assertEquals('sqlite', $adaptar);
     }
 
     public function testGetHost()
@@ -85,7 +103,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
                     "username = myusername",
                     "password = ",
                     "dbname = mydb",
-                    "adaptar = mysql",
+                    "adaptar = sqlite",
             );
         foreach ($configData as $cfg) {
             fwrite($file, $cfg."\n");
@@ -100,16 +118,20 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         // $connector = new PotatoConnector();
     }
 
-    public function testConnectFunction()
+    public function testSetConnectionFunction()
     {
-        // $connection = $this->connector->connect('mysql', 'myhost', 'dbname', 'myusername', '');
-        // $connection = $this->connector->connect($this->expectedconfig['adaptar'], $this->expectedconfig['host'], $this->expectedconfig['dbname'], $this->expectedconfig['username'], $this->expectedconfig['password']);
-        // $this->assertEquals($this->mockConnector, $connection);
-
+        $connection = $this->connector->connect($this->adaptar, $this->host, $this->dbname, $this->username, $this->password);
+        $this->assertInstanceOf('PDO', $connection);
     }
 
     public function testSetConnection()
     {
-
+        $connection = $this->connector->setConnection();
+        $this->assertInstanceOf('PDO', $connection);
     }
+
+    public function tearDown() {
+        m::close();
+    }
+
 }
