@@ -9,6 +9,7 @@ class FaultyConnectionException extends \PDOException
     public function __construct($message)
     {
         $this->message = $message;
+
         return $this->message;
     }
 }

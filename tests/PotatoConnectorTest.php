@@ -1,16 +1,12 @@
 <?php
 
+use Elchroy\PotatoORM\PotatoConnector;
 use Elchroy\PotatoORM\PotatoModel;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamWrapper;
-use org\bovigo\vfs\vfsStreamDirectory;
-use Elchroy\PotatoORM\PotatoConnector;
-
 
 class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 {
-
     private $root;
     private $connector;
     private $mockConnection;
@@ -23,7 +19,6 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     private $password;
     private $dsn;
     private $db;
-
 
     public function setUp()
     {
@@ -41,13 +36,13 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         // echo "Inserted row into table users <br />";
         $this->db->exec('INSERT INTO potatomodel (id, name, price) VALUES (4, "Ferr", 28700)');
 
-        $this->expectedconfig = array(
-                "host" => "myhost",
-                "username" => "myusername",
-                "password" => "",
-                "dbname" => "mydb",
-                "adaptar" => "sqlite",
-            );
+        $this->expectedconfig = [
+                'host'     => 'myhost',
+                'username' => 'myusername',
+                'password' => '',
+                'dbname'   => 'mydb',
+                'adaptar'  => 'sqlite',
+            ];
         $this->adaptar = $this->expectedconfig['adaptar'];
         $this->host = $this->expectedconfig['host'];
         $this->dbname = $this->expectedconfig['dbname'];
@@ -55,7 +50,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->password = $this->expectedconfig['password'];
         $this->dsn = "$this->adaptar:host=$this->host;dbname=$this->dbname";
 
-        $this->root =vfsStream::setup('home');
+        $this->root = vfsStream::setup('home');
         $this->configFile = vfsStream::url('home/config.ini');
 
         $this->connector = new PotatoConnector($this->expectedconfig);
@@ -91,20 +86,20 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     public function testGetPassWord()
     {
         $password = $this->connector->getPassword();
-        $this->assertEquals('', $password   );
+        $this->assertEquals('', $password);
     }
 
     public function testGetConfigurationsIfGivenFilePath()
     {
-        $file = fopen($this->configFile, "a");
-        $configData = array(
-                    "[database]",
-                    "host = myhost",
-                    "username = myusername",
-                    "password = ",
-                    "dbname = mydb",
-                    "adaptar = sqlite",
-            );
+        $file = fopen($this->configFile, 'a');
+        $configData = [
+                    '[database]',
+                    'host = myhost',
+                    'username = myusername',
+                    'password = ',
+                    'dbname = mydb',
+                    'adaptar = sqlite',
+            ];
         foreach ($configData as $cfg) {
             fwrite($file, $cfg."\n");
         }
@@ -135,15 +130,14 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PDO', $connection);
     }
 
-
     public function testSetConnection()
     {
         $connection = $this->connector->setConnection();
         $this->assertInstanceOf('PDO', $connection);
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         m::close();
     }
-
 }
