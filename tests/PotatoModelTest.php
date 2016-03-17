@@ -96,7 +96,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
     {
     }
 
-    public function testGetClassTableNameWorks()
+    public function tedstGetClassTableNameWorks()
     {
         $result = (new Elchroy\PotatoORM\PotatoModel)->getClassTableName();
         $this->assertEquals("potatomodel", $result);
