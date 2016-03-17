@@ -7,9 +7,10 @@ class PotatoModel
     public $queryTo;
     public $dataToSave = [];
 
-    public function __construct(PotatoQuery $potatoQuery)
+    public function __construct(PotatoQuery $potatoQuery = null)
     {
-        $this->queryTo = $potatoQuery;
+        // $this->queryTo = $potatoQuery;
+        $this->queryTo = $potatoQuery == null ? new PotatoQuery() : $potatoQuery;
     }
 
     public function __set($property, $value)
