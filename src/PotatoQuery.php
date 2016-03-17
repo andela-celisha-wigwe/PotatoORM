@@ -16,9 +16,7 @@ class PotatoQuery
 
     public function __construct(PotatoConnector $connector = null)
     {
-        if ($connector == null) {
-            $connector = new PotatoConnector();
-        }
+        $connector = $connector == null ? new PotatoConnector() : $connector;
         $this->connection = $connector->setConnection();
     }
 

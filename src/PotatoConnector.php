@@ -11,14 +11,15 @@ class PotatoConnector
     public $connection;
     public $configuration;
 
-    public function __construct($configurationData = null, $connection = null)
+    public function __construct(Array $configurationData = null, PDO $connection = null)
     {
-        if ($configurationData == null) {
-            $configurationData = $this->getConfigurations();
-        }
-        if ($connection = null) {
-            $connection = $this->connect();
-        }
+        // if ($configurationData == null) {
+        //     $configurationData = $this->getConfigurations();
+        // }
+        // if ($connection = null) {
+        //     $connection = $this->connect();
+        // }
+        $configurationData = ($configurationData == null ? $this->getConfigurations() : $configurationData);
         $this->connection = $connection;
         $this->configuration = $configurationData;
     }
