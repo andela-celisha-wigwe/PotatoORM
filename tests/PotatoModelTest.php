@@ -12,6 +12,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
     private $mockQuery;
     private $mockModel;
     private $model;
+    private $connection;
 
     public function setUp()
     {
@@ -20,11 +21,17 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel2 = PotatoModel::find(4);
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
+        $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
     }
 
     public function teardDown()
     {
         // m::close();
+    }
+
+    public function testGetAllThrowsException()
+    {
+
     }
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
@@ -54,7 +61,7 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         ->will($this->returnValue(23)); //Whatever value you want to return
     }
 
-    public function nonotestGetAllFunctionWorks()
+    public function testGetAllFunctionWorks()
     {
         // $this->mockModel->shouldReceive('getAll')->andReturn(new stdClass());
         // $result = Elchroy\PotatoORM\PotatoModel::getAll();
@@ -91,13 +98,14 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClassTableNameWorks()
     {
-        // $result = (new Elchroy\PotatoORM\PotatoModel)::getClassTableName();
-        // $this->assertEquals("basemodel", $result);
+        $result = (new Elchroy\PotatoORM\PotatoModel)::getClassTableName();
+        $this->assertEquals("potatomodel", $result);
     }
 
     public function testFindFunctionWorks()
     {
-        // $this->mockModel->shouldReceive('find')->with()->once()->andReturn(["name" => "Bolt", "price" => 456]);
+        // $model = m::mock('PotatoModel');
+        // $this->mockModel->shouldReceive('find')->with()->once()->andReturn(["name" => "Bolt", "price" => 4567]);
         // $this->mockModel->find(13);
         // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
     }

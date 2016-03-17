@@ -76,7 +76,6 @@ class PotatoQuery
             $message = $e->getMessage();
             $this->throwFaultyExecutionException($message);
         }
-        // var_dump($execution);
 
         return $execution;
     }

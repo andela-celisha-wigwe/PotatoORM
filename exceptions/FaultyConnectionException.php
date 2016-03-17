@@ -4,8 +4,11 @@ namespace Elchroy\PotatoORMExceptions;
 
 class FaultyConnectionException extends \PDOException
 {
+    public $message;
+
     public function __construct($message)
     {
-        echo $message."\n";
+        $this->message = $message;
+        return $this->message;
     }
 }
