@@ -36,23 +36,8 @@ class PotatoConnector
         return $connection;
     }
 
-    public function connect($adaptar = null, $host = null, $dbname = null, $username = null, $password = null)
+    public function connect($adaptar, $host, $dbname, $username, $password)
     {
-        if (is_null($adaptar)) {
-            $adaptar = $this->getAdaptar();
-        }
-        if (is_null($host)) {
-            $host = $this->getHost();
-        }
-        if (is_null($dbname)) {
-            $dbname = $this->getDBName();
-        }
-        if (is_null($username)) {
-            $username = $this->getUsername();
-        }
-        if (is_null($adaptar)) {
-            $password = $this->getPassword();
-        }
         try {
             $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
