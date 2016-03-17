@@ -19,13 +19,15 @@
         }
     },
     "require" : {
-        "php" : ">=5.5"
+        "php" : ">=5.5",
+        "goaop/framework": "^1.0"
     },
     "require-dev" : {
         "satooshi/php-coveralls" : "^1.0",
         "mockery/mockery": "^0.9.4",
         "mikey179/vfsStream": "~1",
         "codeception/aspect-mock": "*",
-        "phpunit/dbunit": ">=1.2"
+        "phpunit/dbunit": ">=1.2",
+        "phake/phake": "2.*"
     }
 }

@@ -44,7 +44,6 @@ class PotatoConnector
         } catch (PDOException $e) {
             $message = $e->getMessage();
             $this->throwFaultyConnectionException($message);
-            exit;
         }
         return $connection;
     }
