@@ -31,16 +31,15 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllThrowsException()
     {
-
     }
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
     {
         $model = new PotatoModel($this->mockQuery);
-        $model->name = "Puffy";
+        $model->name = 'Puffy';
         $name = $model->name;
         $this->assertContains('name', array_keys($model->dataToSave));
-        $this->assertTrue($name == "Puffy");
+        $this->assertTrue($name == 'Puffy');
     }
 
     public function testGetMagicFunctionDoesNotWorkIfCalledREquesIsNotInDataToSave()
@@ -48,13 +47,13 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         $model = new PotatoModel($this->mockQuery);
         $name = $model->name;
         $this->assertNotContains('name', $model->dataToSave);
-        $this->assertEquals("name not found.", $name);
+        $this->assertEquals('name not found.', $name);
     }
 
     public function tesnotMagicFunctionIsSetWorks()
     {
         $this->getMockBuilder('PotatoModel')
-        ->setMethods(array('insert'))
+        ->setMethods(['insert'])
         ->getMock();
         $this->expects($this->once())
         ->method('handleValue')
@@ -90,16 +89,14 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-
-
     public function testModelSave()
     {
     }
 
     public function tedstGetClassTableNameWorks()
     {
-        $result = (new Elchroy\PotatoORM\PotatoModel)->getClassTableName();
-        $this->assertEquals("potatomodel", $result);
+        $result = (new Elchroy\PotatoORM\PotatoModel())->getClassTableName();
+        $this->assertEquals('potatomodel', $result);
     }
 
     public function testFindFunctionWorks()
