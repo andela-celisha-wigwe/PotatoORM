@@ -113,6 +113,12 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         // $connector = new PotatoConnector();
     }
 
+    public function testGetConFilePath()
+    {
+        $path = $this->connector->getConfigFilePath($this->configFile);
+        $this->assertEquals('vfs://home/config.ini', $path);
+    }
+
     public function testSetConnectionFunction()
     {
         $connection = $this->connector->connect($this->adaptar, $this->host, $this->dbname, $this->username, $this->password);
