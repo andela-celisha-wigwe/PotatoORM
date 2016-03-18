@@ -10,6 +10,7 @@ before_script:
 
 script:
     - mkdir -p build/logs
+    - composer install
     - phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
