@@ -91,9 +91,11 @@ class PotatoConnector
      *
      * @return [string] [The file path of the location where the confuiguration information lie.]
      */
-    public function getConfigFilePath()
+    public function getConfigFilePath($path = null)
     {
-        return __DIR__.'/../config.ini';
+        $path = $path == null ? __DIR__.'/../config.ini' : $path;
+
+        return $path;
     }
 
     /**
