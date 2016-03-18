@@ -57,7 +57,6 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
         $this->connector = new PotatoConnector($this->expectedconfig);
         // $this->mockConnection = m::mock('PDO');
-
     }
 
     public function testGetAdaptar()
