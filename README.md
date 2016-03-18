@@ -89,6 +89,7 @@ echo $book->pages;
 ```
 
 ####Update a record in the database.
+```
 $book = Book::find(2); // '2' is the ID of the book to be found.
 $book->author = "Sia Merica" // Edit the author of the book.
 $book->save(); // Save the book with the new author.
@@ -99,6 +100,7 @@ echo $b->title;
 ==> "Under Mountains"
 echo $b->author;
 ==> "Sia Merica"
+```
 
 ##Test
 
