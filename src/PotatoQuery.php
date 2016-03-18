@@ -63,7 +63,7 @@ class PotatoQuery
         $execution = $this->tryExecuting($statement);
         $result = $statement->fetchObject($table);
         if ($result == false) {
-            echo "Throw Fetching Exception. Record $id : Not found found in this table ($table).";
+            echo "Record $id : Not found found in this table ($table).\n";
         }
 
         return $result;

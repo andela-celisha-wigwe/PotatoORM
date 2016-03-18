@@ -1,0 +1,6 @@
+coverage:
+    enabled: true
+    include:
+        - app/*
+    exclude:
+        - app/cache/*
