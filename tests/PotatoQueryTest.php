@@ -45,6 +45,25 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException Elchroy\PotatoORMExceptions\NoRecordException
+     *
+     * @expectedExceptionMessage The table (orders) is empty.
+     */
+    public function testGetFromThrowsExceptionForNoRecordFound()
+    {
+        $sql = 'SELECT name, price FROM orders';
+        $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        $this->mockStatement->shouldReceive('execute');
+        $this->mockStatement->shouldReceive('fetchAll')->with(\PDO::FETCH_CLASS)->andThrow('Elchroy\PotatoORMExceptions\NoRecordException', 'The table (orders) is empty.');
+        // $this->mockStatement->shouldReceive('fetchObject')->with('orders')->andReturn(true);
+
+        $result = $this->mockQuery->getFrom('orders', 'name, price');
+        $this->assertInstanceOf('stdClass', $result);
+    }
+
+
+
+    /**
      * @expectedException Elchroy\PotatoORMExceptions\FaultyOrNoTableException
      *
      * @expectedExceptionMessage There seems to be a problem. Please confirm if the 'people' table exists in the database.
@@ -153,6 +172,22 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $this->mockConnection->shouldReceive('prepare')->with($sql)->andReturn(false);
 
         $result = $this->mockQuery->deleteFrom('people', 43);
+    }
+
+    /**
+     * @expectedException Elchroy\PotatoORMExceptions\NoRecordException
+     *
+     * @expectedExceptionMessage Record 43 : Not found found in this table people.
+     */
+    public function testGetOneThrowsExceptionForNoRecord()
+    {
+        $sql = 'SELECT * FROM people WHERE id = :id ';
+        $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
+        $this->mockStatement->shouldReceive('bindParam')->once()->with(':id', 43);
+        $this->mockStatement->shouldReceive('execute');
+        $this->mockStatement->shouldReceive('fetchObject')->with('people')->andThrow('Elchroy\PotatoORMExceptions\NoRecordException', "Record 43 : Not found found in this table people.");
+
+        $result = $this->mockQuery->getOne('people', 43);
     }
 
     public function testUpdateFunctionworks()
