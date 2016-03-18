@@ -25,7 +25,6 @@
         "satooshi/php-coveralls" : "^1.0",
         "mockery/mockery": "^0.9.4",
         "mikey179/vfsStream": "~1",
-        "codeclimate/php-test-reporter": "dev-master",
         "phpunit/dbunit": ">=1.2"
     }
 }
