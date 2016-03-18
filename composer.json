@@ -26,6 +26,6 @@
         "mockery/mockery": "^0.9.4",
         "mikey179/vfsStream": "~1",
         "codeclimate/php-test-reporter": "dev-master",
-        "phpunit/dbunit": ">=1.2"
+        "phpunit/php-code-coverage": "^3.3"
     }
 }

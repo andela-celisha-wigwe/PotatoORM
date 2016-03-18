@@ -1,3 +1,9 @@
+[![Coverage Status](https://coveralls.io/repos/github/andela-celisha-wigwe/PotatoORM/badge.svg?branch=develop)](https://coveralls.io/github/andela-celisha-wigwe/PotatoORM?branch=develop)
+[![StyleCI](https://styleci.io/repos/53140489/shield)](https://styleci.io/repos/53140489)
+[![Code Climate](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/gpa.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM)
+[![Test Coverage](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/coverage.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/coverage)
+[![Issue Count](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/issue_count.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM)
+
 # PotatoORM
 A simple php database object relational mapping package.
 
