@@ -52,11 +52,12 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
         $this->root = vfsStream::setup('home');
         $this->configFile = vfsStream::url('home/config.ini');
+        // $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
+        $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
 
         $this->connector = new PotatoConnector($this->expectedconfig);
         // $this->mockConnection = m::mock('PDO');
-        $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
-        // $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
+
     }
 
     public function testGetAdaptar()
