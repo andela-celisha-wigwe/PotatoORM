@@ -4,6 +4,7 @@ namespace Elchroy\PotatoORM;
 
 use Elchroy\PotatoORMExceptions\FaultyExecutionException;
 use Elchroy\PotatoORMExceptions\FaultyOrNoTableException;
+use Elchroy\PotatoORMExceptions\NoRecordException;
 use PDO;
 use PDOException;
 
@@ -34,14 +35,16 @@ class PotatoQuery
     {
         $sql = "SELECT $columns FROM $table";
         $statement = $this->connection->prepare($sql);
-        if ($statement == false) {
-            $this->throwFaultyOrNoTableException($table); // If the SQL query cannot be prepared correctly, then an errir ius thrown
-        }
+        $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
+        // if ($statement == false) {
+        //     $this->throwFaultyOrNoTableException($table); // If the SQL query cannot be prepared correctly, then an errir ius thrown
+        // }
         $execution = $this->tryExecuting($statement);
         $result = $statement->fetchAll(PDO::FETCH_CLASS);
-        if (count($result) < 1) {
-            return "No records found in this table ($table).";
-        }
+        $result == false ? $this->throwNoRecordException($table) : "";
+        // if (count($result) < 1) {
+        //     return "No records found in this table ($table).";
+        // }
 
         return $result;
     }
@@ -58,15 +61,18 @@ class PotatoQuery
     {
         $sql = "SELECT * FROM $table WHERE id = :id ";
         $statement = $this->connection->prepare($sql);
-        if ($statement == false) {
-            $this->throwFaultyOrNoTableException($table);
-        }
+        $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
+        // if ($statement == false) {
+        //     $this->throwFaultyOrNoTableException($table);
+        // }
         $statement->bindParam(':id', $id);
         $execution = $this->tryExecuting($statement);
         $result = $statement->fetchObject($table);
-        if ($result == false) {
-            echo "Record $id : Not found found in this table ($table).\n";
-        }
+        // var_dump($result);
+        $result == false ? $this->throwNoRecordException($table, $id) : "";
+        // if ($result == false) {
+            // echo "Record $id : Not found found in this table ($table).\n";
+        // }
 
         return $result;
     }
@@ -85,9 +91,10 @@ class PotatoQuery
         $count = (int) count($data);
         $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).')';
         $statement = $this->connection->prepare($sql);
-        if ($statement == false) {
-            $this->throwFaultyOrNoTableException($table);
-        }
+        $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
+        // if ($statement == false) {
+        //     $this->throwFaultyOrNoTableException($table);
+        // }
         $this->setBindForInsert($statement, array_values($data));
         $execution = $this->tryExecuting($statement);
 
@@ -164,9 +171,10 @@ class PotatoQuery
     {
         $sql = "DELETE FROM $table WHERE id = :id ";
         $statement = $this->connection->prepare($sql);
-        if ($statement == false) {
-            $this->throwFaultyOrNoTableException($table);
-        }
+        $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
+        // if ($statement == false) {
+        //     $this->throwFaultyOrNoTableException($table);
+        // }
         $statement->bindParam(':id', $id);
         $execution = $this->tryExecuting($statement);
 
@@ -188,9 +196,10 @@ class PotatoQuery
         $upd = (string) $this->makeModify(array_keys($data)); // genertate the columns for the update statement.
         $sql = "UPDATE {$table} SET ".$upd.' WHERE id = :id_val';
         $statement = $this->connection->prepare($sql);
-        if ($statement == false) {
-            $this->throwFaultyOrNoTableException($table);
-        }
+        $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
+        // if ($statement == false) {
+        //     $this->throwFaultyOrNoTableException($table);
+        // }
         $this->setBindForUpdate($statement, $data);
         $statement->bindValue(':id_val', $id);
         $execution = $this->tryExecuting($statement);
@@ -259,5 +268,12 @@ class PotatoQuery
     {
         $message = "There seems to be a problem. Please confirm if the '$table' table exists in the database."; // Create a custom exception message.
         throw new FaultyOrNoTableException($message);
+    }
+
+    public function throwNoRecordException($table, $id = null)
+    {
+        die($message);
+        $message = is_null($id) ? "The table ($table) is empty." : "Record $id : Not found found in this table ($table).";
+        throw new NoRecordException($message);
     }
 }
