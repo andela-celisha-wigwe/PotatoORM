@@ -81,9 +81,7 @@ class PotatoConnector
      */
     public function getConfigurations($filepath = null)
     {
-        if ($filepath == null) {
-            $filepath = $this->getConfigFilePath();
-        }
+        $filepath = $filepath == null ? $this->getConfigurations() : $filepath;
 
         return parse_ini_file($filepath);
     }
