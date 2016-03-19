@@ -41,7 +41,6 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->query->connection = $this->db;
         $this->query->shouldReceive('getFrom');
         $dogs = Dog::getAll($this->query);
-        var_dump($dogs);
     }
 }
 

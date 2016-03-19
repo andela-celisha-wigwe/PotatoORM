@@ -12,6 +12,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     private $mockConnection;
     private $configFile;
     private $sqliteFile;
+    private $testClass;
     private $expectedconfig;
     private $adaptar;
     private $host;
@@ -40,6 +41,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->root = vfsStream::setup('home');
         $this->configFile = vfsStream::url('home/config.ini');
         $this->sqliteFile = vfsStream::url('home/db.sqlite');
+        $this->testClass = vfsStream::url('home/Book.php');
         $this->mockConnection = m::mock('PDO', [$this->dsn, $this->username, $this->password]);
 
         $this->connector = new PotatoConnector($this->expectedconfig);
@@ -88,11 +90,42 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $result = $this->connector->connectDriver('wrongAdaptar', 'host', 'dbname', 'username', 'password');
     }
 
-    public function testSqliteConnectLocatesFile()
+    public function notestSqliteConnectLocatesFile()
     {
         //Try using SQLite to write to the mock file. Not easy though.
         $result = $this->connector->getSqliteFile();
         $this->assertEquals('/Users/user/Code/learn/checkpoint2/potatoorm/src/../db.sqlite', $result);
+    }
+
+    public function notestDB()
+    {
+        $dbFileMock = fopen($this->sqliteFile, "w");
+        $dbContents = file_get_contents("testDB.sqlite");
+        fwrite($dbFileMock, $dbContents);
+        fclose($dbFileMock);
+
+        $classFile = fopen($this->testClass, "w");
+        $classContents = "<?php class Dog extends Elchroy\PotatoORM\PotatoModel { } ?>";
+        fwrite($classFile, $classContents);
+        fclose($classFile);
+
+        $db = fopen("testDB.sqlite", "r");
+        var_dump($db);
+
+        $sql = "SHOW TABLES";
+        // $nc = new PDO("sqlite:".$db);
+        $nc = new PDO("sqlite:testDB.sqlite");
+        $rs = $nc->exec($sql);
+        var_dump($rs);
+        $fstmt = m::mock('PDOStatement');
+        $fconnection = m::mock('PDO', ["sqlite:$db"]);
+        $fconnection->shouldReceive('prepare')->with($sql)->andReturn($fstmt);
+        $fstmt = $fconnection->prepare($sql);
+        $fstmt->shouldReceive('execute');
+        $fstmt->shouldReceive('fetchObject')->andReturn(new stdClass);
+        $fstmt->execute();
+        $result = $fstmt->fetchObject();
+        // var_dump($result);
     }
 
     public function testGetUsername()
