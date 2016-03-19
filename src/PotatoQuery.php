@@ -20,7 +20,8 @@ class PotatoQuery
     public function __construct(PotatoConnector $connector = null)
     {
         $connector = $connector == null ? new PotatoConnector() : $connector;
-        $this->connection = $connector->setConnection();
+        // $this->connection = $connector->setConnection();
+        $this->connection = $connector->connection;
     }
 
     /**
@@ -272,7 +273,6 @@ class PotatoQuery
 
     public function throwNoRecordException($table, $id = null)
     {
-        die($message);
         $message = is_null($id) ? "The table ($table) is empty." : "Record $id : Not found found in this table ($table).";
         throw new NoRecordException($message);
     }
