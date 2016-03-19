@@ -3,6 +3,7 @@
 namespace Elchroy\PotatoORM;
 
 use Elchroy\PotatoORMExceptions\FaultyConnectionException;
+use Elchroy\PotatoORMExceptions\InvalidAdaptarException;
 use PDO;
 use PDOException;
 
@@ -83,7 +84,7 @@ class PotatoConnector
                 $connection = $this->mysqlConnect($adaptar, $host, $dbname, $username, $password);
                 break;
             default:
-                throw PDOException('Please provide a driver for the connection to the database.');
+                $this->throwInvalidAdapterException($adaptar);
                 break;
         }
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -194,5 +195,11 @@ class PotatoConnector
     public function throwFaultyConnectionException($message)
     {
         throw new FaultyConnectionException($message);
+    }
+
+    public function throwInvalidAdapterException($adaptar)
+    {
+        $message = "Invalid Adapter $adaptar : Please provide a driver for the connection to the database.";
+        throw new InvalidAdaptarException($message);
     }
 }

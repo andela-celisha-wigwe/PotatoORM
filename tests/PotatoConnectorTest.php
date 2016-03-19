@@ -75,17 +75,17 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function notestConnectDriverForMySql()
     {
-        $result = $this->connector->connectDriver('mysql', $this->host, $this->dbname, $this->username, $this->password);
-        die('here');
-        $this->assertInstanceOf('PDO', $this->mockConnection);
+        // $mockPDOSqlite = m::mock('PDO', ["mysql:host=host;dbname=dbname", "user", "pass"]);
+        $result = $this->connector->connectDriver('mysql', "host", "dbname", "user", "pass");
+        $this->assertInstanceOf('PDO', $mockPDOSqlite);
     }
 
     /**
-     * @expectedException Elchroy\PotatoORMExceptions\FaultyConnectionException
+     * @expectedException Elchroy\PotatoORMExceptions\InvalidAdaptarException
      *
-     * @expectedExceptionMessage could not find driver
+     * @expectedExceptionMessage Invalid Adapter wrongAdaptar : Please provide a driver for the connection to the database.
      */
-    public function notestConnectDriverforException()
+    public function testConnectDriverforException()
     {
         $result = $this->connector->connectDriver('wrongAdaptar', 'host', 'dbname', 'username', 'password');
     }
@@ -185,12 +185,11 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException Elchroy\PotatoORMExceptions\FaultyConnectionException
      *
-     * @expectedExceptionMessage could not find driver
+     * @expectedExceptionMessage Please provide a driver for the connection to the database.
      */
-    public function notestSetConnectionFunctionThrowsException()
+    public function testSetConnectionFunctionThrowsException()
     {
         $connection = $this->connector->connect('wrongAdaptar', 'wrongHostname', 'wrongDbName', 'wrongUsername', 'wrongPassword');
-        // $this->assertInstanceOf('PDO', $connection);
     }
 
     public function testSetConnection()
