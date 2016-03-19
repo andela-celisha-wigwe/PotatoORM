@@ -112,8 +112,25 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
     }
 
-    public function testSavefunctionWorks()
+    public function testSavefunctionWorksForInsert()
     {
+        $this->mockQuery->shouldReceive('storeIn')->andReturn(true);
+
+        $this->mockModel->name = 'Harry';
+        $result = $this->mockModel->save();
+
+        $this->assertTrue($result);
+    }
+
+    public function testSavefunctionWorksForUpdate()
+    {
+        $this->mockQuery->shouldReceive('updateAt')->andReturn(true);
+
+        $this->mockModel->id = 23;
+        $this->mockModel->name = 'Harry';
+        $result = $this->mockModel->save();
+
+        $this->assertTrue($result);
     }
 
     public function testUpdateFunctionworks()

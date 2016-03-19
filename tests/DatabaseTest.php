@@ -13,9 +13,9 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->db = new PDO('sqlite:testDB.sqlite');
+        $this->db = new PDO('sqlite:newDB.sqlite');
 
-        $this->connection = m::mock('PDO', ['sqlite:newDBear.sqlite']);
+        $this->connection = m::mock('PDO', ['sqlite:newDB.sqlite']);
         $this->connector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->connector->shouldReceive('setConnection')->andReturn($this->connection);
         $this->query = m::mock('Elchroy\PotatoORM\PotatoQuery', [$this->connector]);
@@ -41,6 +41,21 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->query->connection = $this->db;
         $this->query->shouldReceive('getFrom');
         $dogs = Dog::getAll($this->query);
+    }
+
+    public function testFindIdAsStatic()
+    {
+        $this->query->connection = $this->db;
+        $this->query->shouldReceive('getOne')->with('dog', 3);
+        $dog = Dog::find(3, $this->query);
+    }
+
+    public function testDeleteIdAsStatic()
+    {
+        $this->query->connection = $this->db;
+        $this->query->shouldReceive('deleteFrom')->with('dog', 1);
+        $this->query->shouldReceive('getFrom');
+        $dog = Dog::destroy(1, $this->query);
     }
 }
 
