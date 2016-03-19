@@ -79,12 +79,10 @@ class PotatoModel
     public static function getAll($query = null)
     {
         $query = $query == null ? new PotatoQuery() : $query;
-        // if ($query == null) {
-            // $query = new PotatoQuery();
-        // }
         $table = self::getClassTableName();
 
         return $query->getFrom($table);
+
     }
 
     /**
@@ -97,9 +95,7 @@ class PotatoModel
      */
     public static function find($id, $query = null)
     {
-        if ($query == null) {
-            $query = new PotatoQuery();
-        }
+        $query = $query == null ? new PotatoQuery() : $query;
         $table = self::getClassTableName();
 
         return $query->getOne($table, $id);
@@ -163,13 +159,11 @@ class PotatoModel
      */
     public static function destroy($id, $query = null)
     {
-        if ($query == null) {
-            $query = new PotatoQuery();
-        }
+        $query = $query == null ? new PotatoQuery() : $query;
         $table = self::getClassTableName();
         $query->deleteFrom($table, $id);
 
-        return self::getAll(); // return all the items after the previous item has been deleted.
+        return self::getAll($query); // return all the items after the previous item has been deleted.
     }
 
     /**

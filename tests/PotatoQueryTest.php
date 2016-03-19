@@ -191,6 +191,26 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $result = $this->mockQuery->getOne('people', 43);
     }
 
+    /**
+     * @expectedException Elchroy\PotatoORMExceptions\NoRecordException
+     *
+     * @expectedExceptionMessage Record 4 : Not found found in this table (states).
+     */
+    public function testNoRecordExceptionWithId()
+    {
+        $this->mockQuery->throwNoRecordException('states', 4);
+    }
+
+    /**
+     * @expectedException Elchroy\PotatoORMExceptions\NoRecordException
+     *
+     * @expectedExceptionMessage The table (states) is empty.
+     */
+    public function testNoRecordExceptionWithoutId()
+    {
+        $this->mockQuery->throwNoRecordException('states');
+    }
+
     public function testUpdateFunctionworks()
     {
         $sql = 'UPDATE hotels SET name = :name_val, location = :location_val WHERE id = :id_val';
