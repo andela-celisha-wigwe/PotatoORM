@@ -62,14 +62,50 @@ class PotatoConnector
     public function connect($adaptar, $host, $dbname, $username, $password)
     {
         try {
-            $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
-            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $connection = $this->connectDriver($adaptar, $host, $dbname, $username, $password);
+            // $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
+            // $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $message = $e->getMessage();
             $this->throwFaultyConnectionException($message);
         }
 
         return $connection;
+    }
+
+    public function connectDriver($adaptar, $host, $dbname, $username, $password)
+    {
+        switch ($adaptar) {
+            case 'sqlite':
+                $connection = $this->sqliteConnect($adaptar);
+                break;
+            case 'mysql':
+                $connection = $this->mysqlConnect($adaptar, $host, $dbname, $username, $password);
+                break;
+            default:
+                throw PDOException('Please provide a driver for the connection to the database.');
+                break;
+        }
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $connection;
+    }
+
+    public function mysqlConnect($adaptar, $host, $dbname, $username, $password)
+    {
+        $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
+        return $connection;
+    }
+
+    public function sqliteConnect($adaptar, $dbFile = null)
+    {
+        $dbFile = $dbFile == null ? $this->getSqliteFile() : $dbFile;
+        $connection = new PDO("$adaptar:$dbFile");
+        return $connection;
+    }
+
+    public function getSqliteFile($path = null)
+    {
+        return $path = $path == null ? __DIR__.'/../db.sqlite' : $path;
     }
 
     /**

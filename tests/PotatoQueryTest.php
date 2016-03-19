@@ -13,7 +13,8 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockConnection = m::mock('PDO');
-        $this->mockConnector->shouldReceive('setConnection')->andReturn($this->mockConnection);
+        // $this->mockConnector->shouldReceive('setConnection')->andReturn($this->mockConnection);
+        $this->mockConnector->connection = $this->mockConnection;
         $this->mockStatement = m::mock('PDOStatement');
         $this->mockQuery = new PotatoQuery($this->mockConnector);
     }

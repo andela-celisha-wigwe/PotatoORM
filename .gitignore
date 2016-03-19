@@ -4,3 +4,4 @@ index.php
 doc.txt
 src/Dog.php
 check.txt
+tests/DatabaseTest

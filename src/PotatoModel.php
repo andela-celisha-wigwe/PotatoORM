@@ -78,9 +78,10 @@ class PotatoModel
      */
     public static function getAll($query = null)
     {
-        if ($query == null) {
-            $query = new PotatoQuery();
-        }
+        $query = $query == null ? new PotatoQuery() : $query;
+        // if ($query == null) {
+            // $query = new PotatoQuery();
+        // }
         $table = self::getClassTableName();
 
         return $query->getFrom($table);
