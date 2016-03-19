@@ -29,8 +29,13 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // m::close();
     }
 
-    public function testGetAllThrowsException()
+    public function notestGetAllThrowsException()
     {
+        $model = m::mock('Elchroy\PotatoORM\PotatoModel', [$this->mockQuery]);
+        $model->shouldReceive('getAll')->with($this->mockQuery)->andReturn('');
+
+        $result = $model->getAll($this->mockQuery);
+        $this->assertInstanceOf('stdClass', $result);
     }
 
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
