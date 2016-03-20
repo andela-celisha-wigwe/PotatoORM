@@ -8,10 +8,10 @@ services:
     - mysql
 
 before_script:
-    -mysql -e 'create database orm;'
+    - mysql -e 'create database IF NOT EXISTS orm;'
 
 before_install:
-    -mysql -u root -e "CREATE DATABASE IF NOT EXISTS orm;"
+    - mysql -e "create database IF NOT EXISTS orm;" -uroot
 
 script:
     - mkdir -p build/logs
