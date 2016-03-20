@@ -53,8 +53,6 @@ class PotatoModel
         }
 
         return "$property not found.";
-        // Throw an exception
-        // echo "Inside the get method.";
     }
 
     /**
@@ -131,8 +129,6 @@ class PotatoModel
         $table = self::getClassTableName();
 
         return $this->queryTo->storeIn($table, $this->dataToSave);
-
-        // return $this; // return the inserted object.
     }
 
     /**
@@ -145,8 +141,6 @@ class PotatoModel
         $table = self::getClassTableName();
 
         return $this->queryTo->updateAt($table, $this->dataToSave);
-
-        // return $this; // Return the updated ogject.
     }
 
     /**

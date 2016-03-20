@@ -64,8 +64,6 @@ class PotatoConnector
     {
         try {
             $connection = $this->connectDriver($adaptar, $host, $dbname, $username, $password);
-            // $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
-            // $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             $message = $e->getMessage();
             $this->throwFaultyConnectionException($message);
@@ -74,6 +72,16 @@ class PotatoConnector
         return $connection;
     }
 
+    /**
+     * [connectDriver Check which driver is chosen and create a PDO connection based on the driver information.]
+     * Throw an InvalidAdaptarException if the given driver is invalid, does not exist or is not compatible with PDO.
+     * @param  [string] $adaptar  [The adaptar/driver name used to create PDO connection.]
+     * @param  [string] $host     [The hostname to be used for the PDO connection if mysql is chosen.]
+     * @param  [string] $dbname   [The name of the database of the PDO connection.]
+     * @param  [string] $username [The username to be used for the PDO connection if mysql is chosen.]
+     * @param  [string] $password [The password to be used for the PDO connection id mysql is chosen.]
+     * @return [type]           [description]
+     */
     public function connectDriver($adaptar, $host, $dbname, $username, $password)
     {
         switch ($adaptar) {
@@ -91,12 +99,27 @@ class PotatoConnector
         return $connection;
     }
 
+    /**
+     * [mysqlConnect Create a MySQL PDO connection with the mysql driver.]
+     * @param  [string] $adaptar  [The adaptar name used to create PDO connection.]
+     * @param  [string] $host     [The hostname to be used for the PDO connection.]
+     * @param  [string] $dbname   [The name of the database of the PDO connection.]
+     * @param  [string] $username [The username to be used for the PDO connection.]
+     * @param  [string] $password [The password to be used for the PDO connection.]
+     * @return [type]           A PDO connection done with a mysql driver
+     */
     public function mysqlConnect($adaptar, $host, $dbname, $username, $password)
     {
         $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
         return $connection;
     }
 
+    /**
+     * [sqliteConnect Create an SQLite connection if the selected PDO drver is sqlite.]
+     * @param  [string] $adaptar The sqlite driver name
+     * @param  [type] $dbFile  [The database file. If this is null, then get the database file using the getSqliteFile method.]
+     * @return [type]          A PDO connection done with am sqlite driver.
+     */
     public function sqliteConnect($adaptar, $dbFile = null)
     {
         $dbFile = $dbFile == null ? $this->getSqliteFile() : $dbFile;
@@ -104,6 +127,12 @@ class PotatoConnector
         return $connection;
     }
 
+    /**
+     * [getSqliteFile Get the file location of the slqlite file if it is preferred to use an sqlite pdo connection.]
+     * @param  [type] $path [The path to the sqlite database file.]
+     *
+     * @return [type]       [The path to the sqlite file if provided or a default file path if the path in the provided argument is null.]
+     */
     public function getSqliteFile($path = null)
     {
         return $path = $path == null ? __DIR__.'/../db.sqlite' : $path;
@@ -190,13 +219,20 @@ class PotatoConnector
      *
      * @param [string] $message [The message to be related in event of this exception.]
      *
-     * @return [type] [An inherited PDO exception]
+     * @return [type] [An inherited PDO exception with a customized message.]
      */
     public function throwFaultyConnectionException($message)
     {
         throw new FaultyConnectionException($message);
     }
 
+    /**
+     * [throwInvalidAdapterException Throw an exception if the adapter or driver is invalid, does not exist or is not supported by PDO.
+     *
+     * @param [string] $adaptar [The adaptar that should be used for the PDO connection.]
+     *
+     * @return [type] [An inherited PDO exception with a customized message.]
+     */
     public function throwInvalidAdapterException($adaptar)
     {
         $message = "Invalid Adapter $adaptar : Please provide a driver for the connection to the database.";

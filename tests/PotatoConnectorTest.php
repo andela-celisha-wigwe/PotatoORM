@@ -75,9 +75,11 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function notestConnectDriverForMySql()
     {
-        // $mockPDOSqlite = m::mock('PDO', ["mysql:host=host;dbname=dbname", "user", "pass"]);
-        $result = $this->connector->connectDriver('mysql', "host", "dbname", "user", "pass");
-        $this->assertInstanceOf('PDO', $mockPDOSqlite);
+        // Create the Database using mysqli.
+        // mysqli_query("CREATE DATABASE dbname", );
+        $mockPDOSqlite = m::mock('PDO', ["mysql:host=localhost;dbname=dbname", "root", ""]);
+        $result = $this->connector->connectDriver('mysql', "localhost", "orm", "root", "");
+        $this->assertInstanceOf('PDO', $result);
     }
 
     /**
