@@ -4,4 +4,11 @@ index.php
 doc.txt
 src/Dog.php
 check.txt
-tests/DatabaseTest
+tests/ConnectionTest
+tests/db/
+mydb.sqlite
+newDB.sqlite
+newDBear.sqlite
+testDB.sqlite
+Resource id #129
+db.sqlite
