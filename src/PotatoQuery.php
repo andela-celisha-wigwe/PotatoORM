@@ -10,6 +10,10 @@ use PDOException;
 
 class PotatoQuery
 {
+    /**
+     * [$connection The connection to be used to communicate with the database. To be instantiated during construction.]
+     * @var [type] PDO Connection.
+     */
     public $connection;
 
     /**
@@ -37,15 +41,9 @@ class PotatoQuery
         $sql = "SELECT $columns FROM $table";
         $statement = $this->connection->prepare($sql);
         $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
-        // if ($statement == false) {
-        //     $this->throwFaultyOrNoTableException($table); // If the SQL query cannot be prepared correctly, then an errir ius thrown
-        // }
         $execution = $this->tryExecuting($statement);
         $result = $statement->fetchAll(PDO::FETCH_CLASS);
         $result == false ? $this->throwNoRecordException($table) : "";
-        // if (count($result) < 1) {
-        //     return "No records found in this table ($table).";
-        // }
 
         return $result;
     }
@@ -63,17 +61,10 @@ class PotatoQuery
         $sql = "SELECT * FROM $table WHERE id = :id ";
         $statement = $this->connection->prepare($sql);
         $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
-        // if ($statement == false) {
-        //     $this->throwFaultyOrNoTableException($table);
-        // }
         $statement->bindParam(':id', $id);
         $execution = $this->tryExecuting($statement);
         $result = $statement->fetchObject($table);
-        // var_dump($result);
         $result == false ? $this->throwNoRecordException($table, $id) : "";
-        // if ($result == false) {
-            // echo "Record $id : Not found found in this table ($table).\n";
-        // }
 
         return $result;
     }
@@ -93,14 +84,10 @@ class PotatoQuery
         $sql = "INSERT INTO $table $columnsString VALUES (".$this->putQuesMarks($count).')';
         $statement = $this->connection->prepare($sql);
         $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
-        // if ($statement == false) {
-        //     $this->throwFaultyOrNoTableException($table);
-        // }
         $this->setBindForInsert($statement, array_values($data));
         $execution = $this->tryExecuting($statement);
 
         return $execution;
-        // return $this->getOne($table, self::$connection->lastInsertId());
     }
 
     /**
@@ -173,9 +160,6 @@ class PotatoQuery
         $sql = "DELETE FROM $table WHERE id = :id ";
         $statement = $this->connection->prepare($sql);
         $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
-        // if ($statement == false) {
-        //     $this->throwFaultyOrNoTableException($table);
-        // }
         $statement->bindParam(':id', $id);
         $execution = $this->tryExecuting($statement);
 
@@ -198,9 +182,6 @@ class PotatoQuery
         $sql = "UPDATE {$table} SET ".$upd.' WHERE id = :id_val';
         $statement = $this->connection->prepare($sql);
         $statement == false ? $this->throwFaultyOrNoTableException($table) : "";
-        // if ($statement == false) {
-        //     $this->throwFaultyOrNoTableException($table);
-        // }
         $this->setBindForUpdate($statement, $data);
         $statement->bindValue(':id_val', $id);
         $execution = $this->tryExecuting($statement);
@@ -227,7 +208,7 @@ class PotatoQuery
      *
      * @param array $columns [The columns to be updated]
      *
-     * @return [string] [The string of the columns to be updated and their corresponidng value_tags/ placeholders] E.g name = :name-val
+     * @return [string] [The string of the columns to be updated and their corresponidng value_tags/ placeholders] E.g name = :name_val
      */
     public function makeModify(array $columns)
     {
@@ -271,6 +252,15 @@ class PotatoQuery
         throw new FaultyOrNoTableException($message);
     }
 
+    /**
+     * [throwNoRecordException Throw an Exception if there is no record found in the database table.]
+     * This may mean that the table is empty ot that the record with the given ID is not foung.
+     *
+     * @param  [string] $table [The table that is empty or does not have the record with the given ID.]
+     * @param  [int] $id    [The ID of the record that does not exist in the databse table]
+     *
+     * @return [type]        [description]
+     */
     public function throwNoRecordException($table, $id = null)
     {
         $message = is_null($id) ? "The table ($table) is empty." : "Record $id : Not found found in this table ($table).";
