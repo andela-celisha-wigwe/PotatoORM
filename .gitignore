@@ -4,7 +4,8 @@ index.php
 doc.txt
 src/Dog.php
 check.txt
-tests/ConnectionTest
+tests/ConnectionTest.php
+tests/ConnectionTest.php
 tests/db/
 mydb.sqlite
 newDB.sqlite
