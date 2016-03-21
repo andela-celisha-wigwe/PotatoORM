@@ -1,5 +1,5 @@
 {
-    "name" : "elchroy/PotatoORM",
+    "name" : "elchroy/potatoorm",
     "type": "library",
     "homepage": "https://github.com/andela-celisha-wigwe/PotatoORM",
     "keywords": ["object", "relational", "mapping", "ORM", "Potato", "PotatoORM", "database"],
