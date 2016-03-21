@@ -62,8 +62,6 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $result);
     }
 
-
-
     /**
      * @expectedException Elchroy\PotatoORMExceptions\FaultyOrNoTableException
      *
@@ -186,7 +184,7 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('bindParam')->once()->with(':id', 43);
         $this->mockStatement->shouldReceive('execute');
-        $this->mockStatement->shouldReceive('fetchObject')->with('people')->andThrow('Elchroy\PotatoORMExceptions\NoRecordException', "Record 43 : Not found found in this table people.");
+        $this->mockStatement->shouldReceive('fetchObject')->with('people')->andThrow('Elchroy\PotatoORMExceptions\NoRecordException', 'Record 43 : Not found found in this table people.');
 
         $result = $this->mockQuery->getOne('people', 43);
     }

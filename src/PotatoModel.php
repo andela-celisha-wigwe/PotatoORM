@@ -80,7 +80,6 @@ class PotatoModel
         $table = self::getClassTableName();
 
         return $query->getFrom($table);
-
     }
 
     /**
@@ -172,5 +171,4 @@ class PotatoModel
 
         return end($table);
     }
-
 }
