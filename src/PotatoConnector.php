@@ -30,7 +30,8 @@ class PotatoConnector
      */
     public function __construct(array $configData = null)
     {
-        $this->configuration = $configData == null ? $this->getConfigurations() : $configData;
+        $configData == null ? $config = $this->getConfigurations() : $config = $configData;
+        $this->configuration = $config;
         $this->connection = $this->setConnection();
     }
 
@@ -93,7 +94,6 @@ class PotatoConnector
                 break;
             default:
                 $this->throwInvalidAdapterException($adaptar);
-                break;
         }
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $connection;
@@ -147,9 +147,9 @@ class PotatoConnector
      */
     public function getConfigurations($filepath = null)
     {
-        $filepath = $filepath == null ? $this->getConfigurations() : $filepath;
+        $file = ($filepath == null ? $this->getConfigFilePath() : $filepath);
 
-        return parse_ini_file($filepath);
+        return parse_ini_file($file);
     }
 
     /**
@@ -159,9 +159,7 @@ class PotatoConnector
      */
     public function getConfigFilePath($path = null)
     {
-        $path = $path == null ? __DIR__.'/../config.ini' : $path;
-
-        return $path;
+        return $path == null ? __DIR__."/../config.ini" : $path;
     }
 
     /**

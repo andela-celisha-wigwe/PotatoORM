@@ -172,4 +172,5 @@ class PotatoModel
 
         return end($table);
     }
+
 }

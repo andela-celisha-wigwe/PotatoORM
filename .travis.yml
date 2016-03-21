@@ -8,10 +8,10 @@ services:
     - mysql
 
 before_script:
-    - mysql -e 'create database IF NOT EXISTS orm;'
+    - mysql -e 'create database IF NOT EXISTS elchroy;'
 
 before_install:
-    - mysql -e "create database IF NOT EXISTS orm;" -uroot
+    - mysql -e "create database IF NOT EXISTS elchroy;" -uroot
 
 script:
     - mkdir -p build/logs
