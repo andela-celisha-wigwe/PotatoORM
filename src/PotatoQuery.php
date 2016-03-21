@@ -133,18 +133,6 @@ class PotatoQuery
         return '('.implode(', ', array_keys($data)).')';
     }
 
-    public function getColumnsOf($table)
-    {
-        $cols = [];
-        $sql = "DESCRIBE $table ";
-        $statement = $this->connection->prepare($sql);
-        $statement->execute();
-        foreach($statement->fetchAll(PDO::FETCH_NUM) as $col) {
-            array_push($cols, $col[0]);
-        }
-        return $cols;
-    }
-
     /**
      * Bind parameters to the placeholders in the SQL queries. This is to avoid sql injection.
      *

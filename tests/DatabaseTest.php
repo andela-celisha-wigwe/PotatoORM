@@ -57,6 +57,11 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->query->shouldReceive('getFrom');
         $dog = Dog::destroy(1, $this->query);
     }
+
+    public function testDataBasecolumn()
+    {
+
+    }
 }
 
 class Dog extends PotatoModel
