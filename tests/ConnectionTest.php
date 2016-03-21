@@ -36,8 +36,6 @@
 //         $this->assertEquals(0, $this->getConnection()->getRowCount('guestbook'));
 //     }
 
-
-
 //    public function getDataSet()
 //     {
 //         // $comp = new PHPUnit_Extensions_Database_DataSet_CompositeDataSet( array() );

@@ -1,7 +1,7 @@
 <?php
 
-use Mockery as m;
 use Elchroy\PotatoORM\PotatoModel;
+use Mockery as m;
 
 class DatabaseTest extends PHPUnit_Framework_TestCase
 {
@@ -33,7 +33,6 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
         $this->db->exec('INSERT INTO dog (id, name, price) VALUES (4, "Ferr", 28700)');
 
         $this->dog = new Dog($this->query);
-
     }
 
     public function testGetAllAsStatic()
@@ -60,12 +59,9 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function testDataBasecolumn()
     {
-
     }
 }
 
 class Dog extends PotatoModel
 {
 }
-
-

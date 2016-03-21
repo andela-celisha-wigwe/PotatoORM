@@ -1,7 +1,6 @@
 <?php
 
 use Elchroy\PotatoORM\PotatoConnector;
-use Elchroy\PotatoORM\PotatoModel;
 use Mockery as m;
 use org\bovigo\vfs\vfsStream;
 
@@ -70,19 +69,17 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     {
         $result = $this->connector->connectDriver('sqlite', $this->host, $this->dbname, $this->username, $this->password);
         $this->assertInstanceOf('PDO', $result);
-
     }
 
     public function testConnectDriverForMySql()
     {
         // Create the Database using mysqli.
-        $conn = mysqli_connect("127.0.0.1", "root", "");
-        mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS elchroy");
+        $conn = mysqli_connect('127.0.0.1', 'root', '');
+        mysqli_query($conn, 'CREATE DATABASE IF NOT EXISTS elchroy');
         // $mockPDOSqlite = m::mock('PDO', ["mysql:host=127.0.0.1;dbname=dbname", "root", ""]);
-        $result = $this->connector->connectDriver('mysql', "127.0.0.1", "elchroy", "root", "");
+        $result = $this->connector->connectDriver('mysql', '127.0.0.1', 'elchroy', 'root', '');
         $this->assertInstanceOf('PDO', $result);
-        mysqli_query($conn, "DROP DATABASE elchroy"); //Destroy the database;
-
+        mysqli_query($conn, 'DROP DATABASE elchroy'); //Destroy the database;
     }
 
     /**
@@ -104,22 +101,22 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
 
     public function notestDB()
     {
-        $dbFileMock = fopen($this->sqliteFile, "w");
-        $dbContents = file_get_contents("testDB.sqlite");
+        $dbFileMock = fopen($this->sqliteFile, 'w');
+        $dbContents = file_get_contents('testDB.sqlite');
         fwrite($dbFileMock, $dbContents);
         fclose($dbFileMock);
 
-        $classFile = fopen($this->testClass, "w");
+        $classFile = fopen($this->testClass, 'w');
         $classContents = "<?php class Dog extends Elchroy\PotatoORM\PotatoModel { } ?>";
         fwrite($classFile, $classContents);
         fclose($classFile);
 
-        $db = fopen("testDB.sqlite", "r");
+        $db = fopen('testDB.sqlite', 'r');
         var_dump($db);
 
-        $sql = "SHOW TABLES";
+        $sql = 'SHOW TABLES';
         // $nc = new PDO("sqlite:".$db);
-        $nc = new PDO("sqlite:testDB.sqlite");
+        $nc = new PDO('sqlite:testDB.sqlite');
         $rs = $nc->exec($sql);
         var_dump($rs);
         $fstmt = m::mock('PDOStatement');
@@ -127,7 +124,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $fconnection->shouldReceive('prepare')->with($sql)->andReturn($fstmt);
         $fstmt = $fconnection->prepare($sql);
         $fstmt->shouldReceive('execute');
-        $fstmt->shouldReceive('fetchObject')->andReturn(new stdClass);
+        $fstmt->shouldReceive('fetchObject')->andReturn(new stdClass());
         $fstmt->execute();
         $result = $fstmt->fetchObject();
         // var_dump($result);
