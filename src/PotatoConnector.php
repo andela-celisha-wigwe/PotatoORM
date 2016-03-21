@@ -76,12 +76,14 @@ class PotatoConnector
     /**
      * [connectDriver Check which driver is chosen and create a PDO connection based on the driver information.]
      * Throw an InvalidAdaptarException if the given driver is invalid, does not exist or is not compatible with PDO.
-     * @param  [string] $adaptar  [The adaptar/driver name used to create PDO connection.]
-     * @param  [string] $host     [The hostname to be used for the PDO connection if mysql is chosen.]
-     * @param  [string] $dbname   [The name of the database of the PDO connection.]
-     * @param  [string] $username [The username to be used for the PDO connection if mysql is chosen.]
-     * @param  [string] $password [The password to be used for the PDO connection id mysql is chosen.]
-     * @return [type]           [description]
+     *
+     * @param [string] $adaptar  [The adaptar/driver name used to create PDO connection.]
+     * @param [string] $host     [The hostname to be used for the PDO connection if mysql is chosen.]
+     * @param [string] $dbname   [The name of the database of the PDO connection.]
+     * @param [string] $username [The username to be used for the PDO connection if mysql is chosen.]
+     * @param [string] $password [The password to be used for the PDO connection id mysql is chosen.]
+     *
+     * @return [type] [description]
      */
     public function connectDriver($adaptar, $host, $dbname, $username, $password)
     {
@@ -96,42 +98,50 @@ class PotatoConnector
                 $this->throwInvalidAdapterException($adaptar);
         }
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         return $connection;
     }
 
     /**
-     * [mysqlConnect Create a MySQL PDO connection with the mysql driver.]
-     * @param  [string] $adaptar  [The adaptar name used to create PDO connection.]
-     * @param  [string] $host     [The hostname to be used for the PDO connection.]
-     * @param  [string] $dbname   [The name of the database of the PDO connection.]
-     * @param  [string] $username [The username to be used for the PDO connection.]
-     * @param  [string] $password [The password to be used for the PDO connection.]
-     * @return [type]           A PDO connection done with a mysql driver
+     * [mysqlConnect Create a MySQL PDO connection with the mysql driver.].
+     *
+     * @param [string] $adaptar  [The adaptar name used to create PDO connection.]
+     * @param [string] $host     [The hostname to be used for the PDO connection.]
+     * @param [string] $dbname   [The name of the database of the PDO connection.]
+     * @param [string] $username [The username to be used for the PDO connection.]
+     * @param [string] $password [The password to be used for the PDO connection.]
+     *
+     * @return [type] A PDO connection done with a mysql driver
      */
     public function mysqlConnect($adaptar, $host, $dbname, $username, $password)
     {
         $connection = new PDO("$adaptar:host=$host;dbname=$dbname", $username, $password);
+
         return $connection;
     }
 
     /**
-     * [sqliteConnect Create an SQLite connection if the selected PDO drver is sqlite.]
-     * @param  [string] $adaptar The sqlite driver name
-     * @param  [type] $dbFile  [The database file. If this is null, then get the database file using the getSqliteFile method.]
-     * @return [type]          A PDO connection done with am sqlite driver.
+     * [sqliteConnect Create an SQLite connection if the selected PDO drver is sqlite.].
+     *
+     * @param [string] $adaptar The sqlite driver name
+     * @param [type]   $dbFile  [The database file. If this is null, then get the database file using the getSqliteFile method.]
+     *
+     * @return [type] A PDO connection done with am sqlite driver.
      */
     public function sqliteConnect($adaptar, $dbFile = null)
     {
         $dbFile = $dbFile == null ? $this->getSqliteFile() : $dbFile;
         $connection = new PDO("$adaptar:$dbFile");
+
         return $connection;
     }
 
     /**
-     * [getSqliteFile Get the file location of the slqlite file if it is preferred to use an sqlite pdo connection.]
-     * @param  [type] $path [The path to the sqlite database file.]
+     * [getSqliteFile Get the file location of the slqlite file if it is preferred to use an sqlite pdo connection.].
      *
-     * @return [type]       [The path to the sqlite file if provided or a default file path if the path in the provided argument is null.]
+     * @param [type] $path [The path to the sqlite database file.]
+     *
+     * @return [type] [The path to the sqlite file if provided or a default file path if the path in the provided argument is null.]
      */
     public function getSqliteFile($path = null)
     {
@@ -159,7 +169,7 @@ class PotatoConnector
      */
     public function getConfigFilePath($path = null)
     {
-        return $path == null ? __DIR__."/../config.ini" : $path;
+        return $path == null ? __DIR__.'/../config.ini' : $path;
     }
 
     /**

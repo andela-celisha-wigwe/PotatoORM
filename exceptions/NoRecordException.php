@@ -12,5 +12,4 @@ class NoRecordException extends \PDOException
 
         return $this->message;
     }
-
 }
