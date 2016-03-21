@@ -1,7 +1,7 @@
 {
-    "name" : "elchroy/PotatoORM",
+    "name" : "elchroy/potatoorm",
     "type": "library",
-    "homepage": "https://github.com/andela-celisha-wigwe/PotatoORM/tree/develop",
+    "homepage": "https://github.com/andela-celisha-wigwe/PotatoORM",
     "keywords": ["object", "relational", "mapping", "ORM", "Potato", "PotatoORM", "database"],
     "description" : "A simple php database object relational mapping package.",
     "license" : "MIT",
