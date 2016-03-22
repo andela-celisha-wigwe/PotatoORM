@@ -20,12 +20,12 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->expectedconfig = [
-                'host'     => 'myhost',
-                'username' => 'myusername',
-                'password' => '',
-                'dbname'   => 'mydb',
-                'adaptar'  => 'sqlite',
-                'sqlite_file' => 'sample.db'
+                'host'        => 'myhost',
+                'username'    => 'myusername',
+                'password'    => '',
+                'dbname'      => 'mydb',
+                'adaptar'     => 'sqlite',
+                'sqlite_file' => 'sample.db',
             ];
         $this->adaptar = $this->expectedconfig['adaptar'];
         $this->host = $this->expectedconfig['host'];
@@ -73,11 +73,11 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     {
         $conn = mysqli_connect('127.0.0.1', 'root', '');
         mysqli_query($conn, 'CREATE DATABASE IF NOT EXISTS elchroy');
-                $this->connector->configuration["host"] = "127.0.0.1";
-                $this->connector->configuration["dbname"] = "elchroy";
-                $this->connector->configuration["username"] = "root";
-                $this->connector->configuration["password"] = "";
-                $result = $this->connector->connectDriver('mysql');
+        $this->connector->configuration['host'] = '127.0.0.1';
+        $this->connector->configuration['dbname'] = 'elchroy';
+        $this->connector->configuration['username'] = 'root';
+        $this->connector->configuration['password'] = '';
+        $result = $this->connector->connectDriver('mysql');
         $this->assertInstanceOf('PDO', $result);
         mysqli_query($conn, 'DROP DATABASE elchroy'); //Destroy the database;
     }
@@ -120,7 +120,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
                     'password = ',
                     'dbname = mydb',
                     'adaptar = sqlite',
-                    'sqlite_file = sample.db'
+                    'sqlite_file = sample.db',
             ];
         foreach ($configData as $cfg) {
             fwrite($file, $cfg."\n");

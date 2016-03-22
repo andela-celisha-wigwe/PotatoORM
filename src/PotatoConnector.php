@@ -145,7 +145,7 @@ class PotatoConnector
      */
     public function getSqliteFile()
     {
-        $path = $this->configuration["sqlite_file"];
+        $path = $this->configuration['sqlite_file'];
 
         return $path;
     }

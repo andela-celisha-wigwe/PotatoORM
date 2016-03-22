@@ -9,6 +9,7 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
     private $query;
     private $connector;
     private $db;
+
     public function setUp()
     {
         $this->db = new PDO('sqlite:newDB.sqlite');
