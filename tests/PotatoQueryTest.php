@@ -23,10 +23,8 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
     {
         $sql = 'SELECT name, price FROM orders';
         $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
-        // $this->mockConnector->shouldReceive('prepare')->once()->with($sql)->andReturn($this->mockStatement);
         $this->mockStatement->shouldReceive('execute');
         $this->mockStatement->shouldReceive('fetchAll')->with(\PDO::FETCH_CLASS)->andReturn(new stdClass());
-        // $this->mockStatement->shouldReceive('fetchObject')->with('orders')->andReturn(true);
 
         $result = $this->mockQuery->getFrom('orders', 'name, price');
         $this->assertInstanceOf('stdClass', $result);
@@ -85,15 +83,6 @@ class PotatoQueryTest extends \PHPUnit_Framework_TestCase
         $this->mockConnection->shouldReceive('prepare')->once()->with($sql)->andReturn(false);
 
         $result = $this->mockQuery->getOne('people', 43);
-    }
-
-    /**
-     * @expectedException Elchroy\PotatoORMExceptions\FaultyExecutionException
-     *
-     * @expectedExceptionMessage There seems to be a problem. Please confirm if the 'people' table exists in the database.
-     */
-    public function teddstTryExceutingThrowsException()
-    {
     }
 
     public function testGetOne()

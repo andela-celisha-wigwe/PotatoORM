@@ -131,7 +131,7 @@ class PotatoConnector
     public function sqliteConnect($adaptar, $dbFile = null)
     {
         $dbFile = $dbFile == null ? $this->getSqliteFile() : $dbFile;
-        $connection = new PDO("$adaptar:$dbFile");
+        $connection = new PDO("sqlite:../$dbFile");
 
         return $connection;
     }
@@ -143,9 +143,13 @@ class PotatoConnector
      *
      * @return [type] [The path to the sqlite file if provided or a default file path if the path in the provided argument is null.]
      */
-    public function getSqliteFile($path = null)
+    public function getSqliteFile()
     {
-        return $path = $path == null ? __DIR__.'/../db.sqlite' : $path;
+
+        // $data = parse_ini_file("../config.ini");
+        $path = $this->configuration["sqlite_file"];
+
+        return $path;
     }
 
     /**

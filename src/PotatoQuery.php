@@ -25,7 +25,6 @@ class PotatoQuery
     public function __construct(PotatoConnector $connector = null)
     {
         $connector = $connector == null ? new PotatoConnector() : $connector;
-        // $this->connection = $connector->setConnection();
         $this->connection = $connector->connection;
     }
 
@@ -213,7 +212,6 @@ class PotatoQuery
      */
     public function makeModify(array $columns)
     {
-        // make sure that you remove the id from this upd
         $count = count($columns);
         $updateString = ''; // Start with an empty string
         foreach ($columns as $column) {
@@ -249,7 +247,7 @@ class PotatoQuery
      */
     public function throwFaultyOrNoTableException($table)
     {
-        $message = "There seems to be a problem. Please confirm if the '$table' table exists in the database."; // Create a custom exception message.
+        $message = "There seems to be a problem. Please confirm if the '$table' table exists in the database.";
         throw new FaultyOrNoTableException($message);
     }
 

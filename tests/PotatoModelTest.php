@@ -29,15 +29,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // m::close();
     }
 
-    public function notestGetAllThrowsException()
-    {
-        $model = m::mock('Elchroy\PotatoORM\PotatoModel', [$this->mockQuery]);
-        $model->shouldReceive('getAll')->with($this->mockQuery)->andReturn('');
-
-        $result = $model->getAll($this->mockQuery);
-        $this->assertInstanceOf('stdClass', $result);
-    }
-
     public function testGetMagicFunctionWorksAndREturnTheDataInDatatoSave()
     {
         $model = new PotatoModel($this->mockQuery);
@@ -65,16 +56,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         ->will($this->returnValue(23)); //Whatever value you want to return
     }
 
-    public function testGetAllFunctionWorks()
-    {
-        // $this->mockModel->shouldReceive('getAll')->andReturn(new stdClass());
-        // $result = Elchroy\PotatoORM\PotatoModel::getAll();
-        // $this->assertInstanceOf($result, "stdClass");
-        // $this->mockModel->shouldReceive('getAll')->once()->andReturn(["name" => "Bolt", "price" => 4567]);
-        // $expected = $this->mockModel->getAll();
-        // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
-    }
-
     public function testGetAllFunctionWorksWithNullAsQuery()
     {
     }
@@ -92,24 +73,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         $model->id = 34;
         $result = $model->isStored();
         $this->assertTrue($result);
-    }
-
-    public function testModelSave()
-    {
-    }
-
-    public function tedstGetClassTableNameWorks()
-    {
-        $result = (new Elchroy\PotatoORM\PotatoModel())->getClassTableName();
-        $this->assertEquals('potatomodel', $result);
-    }
-
-    public function testFindFunctionWorks()
-    {
-        // $model = m::mock('PotatoModel');
-        // $this->mockModel->shouldReceive('find')->with()->once()->andReturn(["name" => "Bolt", "price" => 4567]);
-        // $this->mockModel->find(13);
-        // $this->assertEquals($expected, ["name" => "Bolt", "price" => 4567]);
     }
 
     public function testSavefunctionWorksForInsert()
