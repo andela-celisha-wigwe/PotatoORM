@@ -41,11 +41,7 @@ class PotatoConnector
     public function setConnection()
     {
         $adaptar = $this->getAdaptar();
-        $host = $this->getHost();
-        $dbname = $this->getDBName();
-        $username = $this->getUsername();
-        $password = $this->getPassword();
-        $connection = $this->connect($adaptar, $host, $dbname, $username, $password);
+        $connection = $this->connect($adaptar);
 
         return $connection;
     }
@@ -61,10 +57,10 @@ class PotatoConnector
      *
      * @return [type] [A PDO connection to the databsase]
      */
-    public function connect($adaptar, $host, $dbname, $username, $password)
+    public function connect($adaptar)
     {
         try {
-            $connection = $this->connectDriver($adaptar, $host, $dbname, $username, $password);
+            $connection = $this->connectDriver($adaptar);
         } catch (PDOException $e) {
             $message = $e->getMessage();
             $this->throwFaultyConnectionException($message);
@@ -85,13 +81,17 @@ class PotatoConnector
      *
      * @return [type] [description]
      */
-    public function connectDriver($adaptar, $host, $dbname, $username, $password)
+    public function connectDriver($adaptar)
     {
         switch ($adaptar) {
             case 'sqlite':
                 $connection = $this->sqliteConnect($adaptar);
                 break;
             case 'mysql':
+                $host = $this->getHost();
+                $dbname = $this->getDBName();
+                $username = $this->getUsername();
+                $password = $this->getPassword();
                 $connection = $this->mysqlConnect($adaptar, $host, $dbname, $username, $password);
                 break;
             default:
@@ -145,8 +145,6 @@ class PotatoConnector
      */
     public function getSqliteFile()
     {
-
-        // $data = parse_ini_file("../config.ini");
         $path = $this->configuration["sqlite_file"];
 
         return $path;

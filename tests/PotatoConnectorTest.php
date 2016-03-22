@@ -57,9 +57,15 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PDO', $result);
     }
 
+    public function testSqliteConnectForNoPath()
+    {
+        $result = $this->connector->sqliteConnect('sqlite');
+        $this->assertInstanceOf('PDO', $result);
+    }
+
     public function testConnectDriverForSQLite()
     {
-        $result = $this->connector->connectDriver('sqlite', $this->host, $this->dbname, $this->username, $this->password);
+        $result = $this->connector->connectDriver('sqlite');
         $this->assertInstanceOf('PDO', $result);
     }
 
@@ -67,7 +73,11 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
     {
         $conn = mysqli_connect('127.0.0.1', 'root', '');
         mysqli_query($conn, 'CREATE DATABASE IF NOT EXISTS elchroy');
-        $result = $this->connector->connectDriver('mysql', '127.0.0.1', 'elchroy', 'root', '');
+                $this->connector->configuration["host"] = "127.0.0.1";
+                $this->connector->configuration["dbname"] = "elchroy";
+                $this->connector->configuration["username"] = "root";
+                $this->connector->configuration["password"] = "";
+                $result = $this->connector->connectDriver('mysql');
         $this->assertInstanceOf('PDO', $result);
         mysqli_query($conn, 'DROP DATABASE elchroy'); //Destroy the database;
     }
@@ -79,7 +89,7 @@ class PotatoConnectorTest extends PHPUnit_Framework_TestCase
      */
     public function testConnectDriverforException()
     {
-        $result = $this->connector->connectDriver('wrongAdaptar', 'host', 'dbname', 'username', 'password');
+        $result = $this->connector->connectDriver('wrongAdaptar');
     }
 
     public function testGetUsername()
