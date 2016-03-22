@@ -1,8 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela-celisha-wigwe/PotatoORM/badge.svg?branch=develop)](https://coveralls.io/github/andela-celisha-wigwe/PotatoORM?branch=develop)
 [![StyleCI](https://styleci.io/repos/53140489/shield)](https://styleci.io/repos/53140489)
-[![Code Climate](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/gpa.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM)
-[![Test Coverage](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/coverage.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/coverage)
-[![Issue Count](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM/badges/issue_count.svg)](https://codeclimate.com/github/andela-celisha-wigwe/PotatoORM)
+[![Build Status](https://travis-ci.org/andela-celisha-wigwe/PotatoORM.svg?branch=develop)](https://travis-ci.org/andela-celisha-wigwe/PotatoORM)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/andela-celisha-wigwe/PotatoORM/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/andela-celisha-wigwe/PotatoORM/?branch=develop)
 
 # PotatoORM
@@ -40,8 +38,8 @@ If the preferred database is `MySQL`, edit the `config.ini` file like below.
 ```
 [database]
 host = localhost
-username = root
-password =
+username = username_of_database
+password = ****
 dbname = name_of_database
 adaptar = mysql
 ```
@@ -59,9 +57,11 @@ sqlite_file = name_of_database_file
 
 Once you have setup a working database, ensure to have a table in the database. Create a table unless already created.
 
-***Note that the table name must be the same with the desired class. Also the table name must be in lowercase.***
-***The table must have a column named `id` with `int` value type and must be set as the primary key of the table.***
-***Otherwise, some errors might be encountered.***
+*Note that the table name must be the same with the desired class. Also the table name must be in lowercase.*
+
+*The table must have a column named `id` with `int` value type and must be set as the primary key of the table.*
+
+*Otherwise, some errors might be encountered.*
 
 The following simple SQL query will create a `book` table with 4 columns.
 
@@ -73,7 +73,7 @@ At this point, the package is ready to communicate with the database and the tab
 
 ### Usage
 
-####Create a custom class to extend the `PotatoModel` class.
+#####Create a custom class to extend the `PotatoModel` class.
 ```
 class Book extends PotatoModel
 {
@@ -81,18 +81,18 @@ class Book extends PotatoModel
 }
 ```
 
-**The class name has to be the same with the table in the database that you have setup.**
+The class name has to be the same with the table in the database that you have setup.
 
-####Make a new instance of the class.
+#####Make a new instance of the class.
 ```
 $book1 = new Book();
 
 $book2 = new Book();
 ```
 
-####Define some properties of the class that should be save in the database table.
+#####Define some properties of the class that should be save in the database table.
 
-**Ensure that the properties defined have the same name as the columns of the database table.**
+Ensure that the properties defined have the same name as the columns of the database table.
 
 ```
 // Add a first book
@@ -106,14 +106,14 @@ $book2->author = "Zendel Shezery";
 $bolt2->pages = 350;
 ```
 
-####Save the new record in the table.
+#####Save the new record in the table.
 ```
 // Save the two new books.
 $book1->save();
 $book2->save();
 ```
 
-####Find the record from the database.
+#####Find the record from the database.
 ```
 // Find the book with ID of 2.
 $book = Book::find(2);
@@ -124,7 +124,7 @@ echo $book->author;
 echo $book->pages;
 ```
 
-####Update a record in the database.
+#####Update a record in the database.
 ```
 $book = Book::find(2); // '2' is the ID of the book to be found.
 $book->author = "Sia Merica" // Edit the author of the book.
