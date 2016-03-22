@@ -18,8 +18,6 @@ class PotatoModel
      */
     public $dataToSave = [];
 
-    public $externalProperties = [];
-
     /**
      * [__construct The constructor to initialize public variables].
      *
@@ -28,7 +26,6 @@ class PotatoModel
     public function __construct(PotatoQuery $potatoQuery = null)
     {
         $this->queryTo = $potatoQuery == null ? new PotatoQuery() : $potatoQuery;
-        // $this->dataToSave = array_merge($this->dataToSave, $this->internalProperties());
     }
 
     /**
@@ -39,9 +36,7 @@ class PotatoModel
      */
     public function __set($property, $value)
     {
-        // $this->dataToSave[$property] = $value;
-        $this->externalProperties[$property] = $value;
-        $this->dataToSave = array_merge($this->externalProperties, $this->internalProperties());
+        $this->dataToSave[$property] = $value;
     }
 
     /**
@@ -178,23 +173,4 @@ class PotatoModel
         return end($table);
     }
 
-
-    public function internalProperties()
-    {
-        $savable = [];
-        $objectVars = get_object_vars($this);
-        $props = array_keys($objectVars);
-        $notSavable = ["queryTo", "dataToSave", "externalProperties"];
-        $saveKeys = array_filter($props, function ($prop) use ($notSavable, $objectVars) {return !in_array($prop, $notSavable) && !is_null($objectVars[$prop]);});
-        array_map(function ($sk) use (&$savable, $objectVars) {return $savable[$sk] = $objectVars[$sk]; }, $saveKeys);
-
-        return $savable;
-    }
-
-    public function getTableColumns()
-    {
-        $table = self::getClassTableName();
-
-        return $this->queryTo->getColumnsOf($table);
-    }
 }

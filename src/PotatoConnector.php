@@ -94,7 +94,6 @@ class PotatoConnector
                 break;
             default:
                 $this->throwInvalidAdapterException($adaptar);
-                break;
         }
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $connection;
