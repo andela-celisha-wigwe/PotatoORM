@@ -21,7 +21,6 @@ class PotatoModelTest extends \PHPUnit_Framework_TestCase
         // $this->mockModel2 = PotatoModel::find(4);
         $this->mockConnector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->mockStatement = m::mock('PDOStatement');
-        $this->mockConnection = m::mock('PDO', ['sqlite:mydb.sqlite']);
     }
 
     public function teardDown()

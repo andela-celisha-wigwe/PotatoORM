@@ -12,9 +12,6 @@ class DatabaseTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->db = new PDO('sqlite:newDB.sqlite');
-
-        $this->connection = m::mock('PDO', ['sqlite:newDB.sqlite']);
         $this->connector = m::mock('Elchroy\PotatoORM\PotatoConnector');
         $this->connector->shouldReceive('setConnection')->andReturn($this->connection);
         $this->query = m::mock('Elchroy\PotatoORM\PotatoQuery', [$this->connector]);
