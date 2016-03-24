@@ -126,12 +126,23 @@ $book = Book::find(2); // '2' is the ID of the book to be found.
 $book->author = "Sia Merica" // Edit the author of the book.
 $book->save(); // Save the book with the new author.
 
-// Chech if the book has been updated.
+// Check if the book has been updated.
 $b = Book::find(2); // The same book with the same ID.
 echo $b->title;
 ==> "Under Mountains"
 echo $b->author;
 ==> "Sia Merica"
+```
+
+#####Delete a record from the database.
+```
+$book = Book::destroy(2); // '2' is the ID of the book to be deleted.
+
+// The book has been deleted and an exception is thrown.
+$b = Book::find(2); // 2 is the ID of the book that was deleted.
+
+Record 2 : Not found found in this table (book).;
+...
 ```
 
 ##Test
