@@ -57,17 +57,13 @@ sqlite_file = name_of_database_file
 
 Once you have setup a working database, ensure to have a table in the database. Create a table unless already created.
 
-*Note that the table name must be the same with the desired class. Also the table name must be in lowercase.*
+* Note that the table name must be the same with the desired class. Also the table name must be in lowercase.*
 
-*The table must have a column named `id` with `int` value type and must be set as the primary key of the table.*
-
-*Otherwise, some errors might be encountered.*
+* The table must have a column named `id` with `int` value type and must be set as the primary key of the table. Otherwise, some errors might be encountered.
 
 The following simple SQL query will create a `book` table with 4 columns.
 
 `CREATE TABLE 'book' (id int NOT NULL AUTOINCREMENT PRIMARY, title varchar(255), author varchar(255)), pages int`.
-
-Once the steps above are completed:
 
 At this point, the package is ready to communicate with the database and the table.
 
