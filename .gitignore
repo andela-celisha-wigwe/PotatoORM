@@ -1,0 +1,15 @@
+vendor
+composer.lock
+index.php
+doc.txt
+src/Dog.php
+check.txt
+tests/ConnectionTest.php
+tests/ConnectionTest.php
+tests/db/
+mydb.sqlite
+newDB.sqlite
+newDBear.sqlite
+testDB.sqlite
+Resource id #129
+db.sqlite

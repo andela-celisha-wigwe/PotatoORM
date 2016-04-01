@@ -1,0 +1,30 @@
+{
+    "name" : "elchroy/potatoorm",
+    "type": "library",
+    "homepage": "https://github.com/andela-celisha-wigwe/PotatoORM",
+    "keywords": ["object", "relational", "mapping", "ORM", "Potato", "PotatoORM", "database"],
+    "description" : "A simple php database object relational mapping package.",
+    "license" : "MIT",
+    "authors" : [
+                    {
+                        "name" : "andela-celisha-wigwe",
+                        "email" : "chijioke.elisha-wigwe@andela.com",
+                        "role" : "Software Developer"
+                    }
+                ],
+    "autoload" : {
+        "psr-4": {
+            "Elchroy\\PotatoORM\\" : "src",
+            "Elchroy\\PotatoORMExceptions\\" : "exceptions"
+        }
+    },
+    "minimum-stability": "beta",
+    "require" : {
+        "php" : ">=5.5"
+    },
+    "require-dev" : {
+        "satooshi/php-coveralls" : "^1.0",
+        "mockery/mockery": "^0.9.4",
+        "mikey179/vfsStream": "~1"
+    }
+}
